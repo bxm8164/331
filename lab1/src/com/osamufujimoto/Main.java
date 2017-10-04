@@ -39,12 +39,19 @@ public class Main {
      */
     static File output = new File("output.png");
 
+    /**
+     * Main program
+     * @param args the arguments
+     */
     public static void main(String[] args) {
 
-        //Node[][] n = read(image, elevations);
+        Node[][] n = read(image, elevations);
 
-        plotCoursePoints(brown /* course */,  image);
+        // plotCoursePoints(brown /* course */,  image);
 
+        successors(n[2][2], n);
+
+        _printSuccessors(n[2][2]);
     }
 
 
@@ -101,6 +108,61 @@ public class Main {
         }
 
     }
+
+    /**
+     * Compute the node successors
+     * @param node the node we want the successors
+     * @param all all the nodes.
+     */
+    private static void successors(Node node, Node[][] all) {
+
+
+        int y = node.y;
+        int x = node.x;
+
+                if (y == 0) {
+
+                    node.addSuccessor(all[y + 1][x]);
+
+                } else if (y == 499) {
+
+                    node.addSuccessor(all[y - 1][x]);
+                } else {
+
+                    node.addSuccessor(all[y + 1][x]);
+                    node.addSuccessor(all[y - 1][x]);
+                }
+
+                if (x == 0) {
+
+                    node.addSuccessor(all[y][x + 1]);
+
+                } else if (x == 394) {
+                    node.addSuccessor(all[y][x - 1]);
+
+                } else {
+                    node.addSuccessor(all[y][x + 1]);
+                    node.addSuccessor(all[y][x - 1]);
+                }
+
+            }
+
+
+
+    /**
+     * Print the successors of a node
+     * @param node the node we want the successors
+     */
+    private static void _printSuccessors(Node node) {
+
+        for (Node successors : node.sucessors) {
+
+            PRINT(successors.toString());
+
+        }
+    }
+
+
 
     /**
      * Read the each pixel value and create a Node containing its position, terrain type and elevation

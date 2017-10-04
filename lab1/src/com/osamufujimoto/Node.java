@@ -1,5 +1,8 @@
 package com.osamufujimoto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node {
 
     /**
@@ -22,6 +25,8 @@ public class Node {
      */
     public final double e;
 
+    public List<Node> sucessors = new ArrayList<>();
+
     /**
      * Node constructor
      * @param x the x coordinate
@@ -39,5 +44,23 @@ public class Node {
 
         this.e = e;
 
+    }
+
+    /**
+     * Add a node to the list of successors
+     * @param node the node to be added
+     */
+    public void addSuccessor(Node node) {
+
+        sucessors.add(node);
+    }
+
+    /**
+     * The string representation of the node
+     * @return the string representation.
+     */
+    public String toString() {
+
+        return String.format("Node: (%d, %d)", x, y);
     }
 }
