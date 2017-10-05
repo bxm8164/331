@@ -39,7 +39,7 @@ public class Main {
     /**
      * THe output file
      */
-    static File output = new File("output1.png");
+    static File output = new File("output_all_.png");
 
     /**
      * Main program
@@ -65,7 +65,7 @@ public class Main {
 
         // Search s = new Search(n[327][230], n[347][230], n);
 
-        Search s = new Search(n[327][230], n[347][241], n);
+        // Search s = new Search(n[327][230], n[347][241], n);
 
         /**
         ArrayList<Node> nn = new ArrayList<>();
@@ -81,9 +81,62 @@ public class Main {
          **/
 
 
-        s.find();
+        //s.find();
 
         // s.rebuildPath();
+
+        List<Node> nodes = _readInputFile(new File("brown.txt"), n);
+
+        PRINT ("Number of nodes: " + nodes.size());
+
+        List<Node> fullPath = new ArrayList<>();
+
+        for (int i = 0; i < nodes.size() - 1; i++) {
+
+            Search s = new Search(nodes.get(i), nodes.get(i + 1), n);
+
+            s.find();
+
+            PRINT("Working with " +  nodes.get(i).toString() + " and " + nodes.get(i+1).toString());
+
+            fullPath.addAll(s.all);
+
+
+        }
+
+        _plotCoursePoints(fullPath, new File("terrain.png"));
+    }
+
+    public static List<Node> _readInputFile(File _input, Node[][] nodes) {
+
+        List<Node> all = new ArrayList<>();
+
+        try {
+
+            BufferedReader reader = new BufferedReader(new FileReader(_input));
+
+            String line;
+
+
+            while( (line = reader.readLine()) != null) {
+
+                String[] s = line.split(" ");
+
+                int y = Integer.parseInt(s[0]);
+
+                int x = Integer.parseInt(s[1]);
+
+                Node node = nodes[y][x];
+
+                all.add(node);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return all;
+
     }
 
 
@@ -94,6 +147,8 @@ public class Main {
 
             BufferedImage image = ImageIO.read(_image);
 
+
+            PRINT("Number of nodes: " + nodes.size());
             for (Node node : nodes) {
 
 

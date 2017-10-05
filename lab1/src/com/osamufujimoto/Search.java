@@ -1,10 +1,7 @@
 package com.osamufujimoto;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import static com.osamufujimoto.Util.LOGD;
 import static com.osamufujimoto.Util.PRINT;
@@ -107,6 +104,7 @@ public class Search {
 
                 rebuildPath(current);
 
+                return;
             }
 
             closed.add(current);
@@ -150,10 +148,13 @@ public class Search {
 
     public static double heuristic(Node s, Node g) {
 
-        return 1.0;
+        return manhattanDistance(s, g);
+
+        // return 1.0;
     }
 
 
+    List<Node> all = new ArrayList<>();
 
     public void rebuildPath(Node current) {
 
@@ -168,13 +169,15 @@ public class Search {
             current = cameFrom.get(current);
 
             path.add(current);
+
+            all.add(current);
         }
 
         for (Node node : path) {
             PRINT(node.toString());
         }
 
-        Main._plotCoursePoints(path, new File("terrain.png"));
+        // Main._plotCoursePoints(path, new File("terrain.png"));
 
     }
 
