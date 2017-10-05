@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.osamufujimoto.Util.PRINT;
 
@@ -37,7 +39,7 @@ public class Main {
     /**
      * THe output file
      */
-    static File output = new File("output.png");
+    static File output = new File("output1.png");
 
     /**
      * Main program
@@ -49,18 +51,84 @@ public class Main {
 
         // plotCoursePoints(brown /* course */,  image);
 
-        successors(n[2][2], n);
+        // successors(n[2][2], n);
 
-        _printSuccessors(n[2][2]);
+        // _printSuccessors(n[2][2]);
+
+
+        // 230 327
+        // 241 347
+
+        //
+        // 269 346
+        // 270 353
+
+        // Search s = new Search(n[327][230], n[347][230], n);
+
+        Search s = new Search(n[327][230], n[347][241], n);
+
+        /**
+        ArrayList<Node> nn = new ArrayList<>();
+        for (int i = 0; i < 500; i++) {
+
+            for (int j = 0; j < 395; j++) {
+
+                nn.add(n[i][j]);
+            }
+        }
+
+        _plotCoursePoints(nn, new File("terrain.png"));
+         **/
+
+
+        s.find();
+
+        // s.rebuildPath();
     }
 
+
+    public static void _plotCoursePoints(List<Node> nodes, File _image) {
+        try {
+
+            System.out.println("Here...!");
+
+            BufferedImage image = ImageIO.read(_image);
+
+            for (Node node : nodes) {
+
+
+                int x = node.x;
+
+                int y = node.y;
+
+                int color = new Color(255, 0 , 0).getRGB();
+
+                //
+                // image.setRGB(x, y,  node.c.getRGB()); // red
+
+                image.setRGB(x, y, color);
+                //
+                // Make the marker bigger
+                //
+
+
+
+            }
+
+            ImageIO.write(image, "png", output);
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+        }
+    }
 
     /**
      * Plot the points from a file to an image
      * @param _course the file containing the points
      * @param _image the image
      */
-    public static void plotCoursePoints(File _course, File _image) {
+    public static void _plotCoursePoints(File _course, File _image) {
 
         try {
 
@@ -114,7 +182,7 @@ public class Main {
      * @param node the node we want the successors
      * @param all all the nodes.
      */
-    private static void successors(Node node, Node[][] all) {
+    public static void successors(Node node, Node[][] all) {
 
 
         int y = node.y;
@@ -172,7 +240,7 @@ public class Main {
      */
     public static Node[][] read(File _image, File _elevation) {
 
-        final double[][] elevation = readFile(_elevation);
+        final double[][] elevation = _readFile(_elevation);
 
         Node[][] node = new Node[500][395];
 
@@ -197,7 +265,7 @@ public class Main {
                         throw new Exception();
                     }
 
-                    node[i][j] = new Node(i, j, t, elevation[i][j]);
+                    node[i][j] = new Node(j, i, t, elevation[i][j], color);
 
                 }
 
@@ -261,9 +329,9 @@ public class Main {
      * @param _text The text file
      * @return an array containing the elevations
      */
-    private static double[][] readFile(File _text) {
+    private static double[][] _readFile(File _text) {
 
-        double[][] result = new double[500][495];
+        double[][] result = new double[500][395];
 
         try {
 
@@ -285,7 +353,7 @@ public class Main {
                 //
                 for (int j = 1; j < 396; j++) {
 
-                    result[i][j] = Double.parseDouble(sp[j]);
+                    result[i][j - 1] = Double.parseDouble(sp[j]);
                 }
             }
 

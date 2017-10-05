@@ -1,5 +1,6 @@
 package com.osamufujimoto;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,13 @@ public class Node {
      */
     public final double e;
 
+    /**
+     * The cost of this node
+     */
+    public final double cost;
+
+    public Color c;
+
     public List<Node> sucessors = new ArrayList<>();
 
     /**
@@ -43,6 +51,17 @@ public class Node {
         this.t = t;
 
         this.e = e;
+
+        this.cost = e; /* to be changed later */
+
+
+    }
+
+    public Node(int x, int y, Terrain t, double e, Color c) {
+        this(x, y, t, e);
+
+        this.c = c;
+
 
     }
 

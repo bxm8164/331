@@ -66,5 +66,25 @@ public class Util {
         return Math.sqrt(Math.pow(_x - x, 2) + Math.pow(_y - y, 2));
     }
 
+    /**
+     * Calculate the distance between two nodes
+     * @param o1 the first node
+     * @param o2 the second node
+     * @return the distance between the first and the second node.
+     */
+    public static double distance(Node o1, Node o2) {
+
+        return distance(o1.x, o1.y, o2.x, o2.y);
+    }
+
+    public static double manhattanDistance(Node o1, Node o2) {
+
+        double dx = Math.abs(o1.x - o2.x);
+
+        double dy = Math.abs(o1.y - o1.y);
+
+        return 1.0 * (dx + dy);
+    }
+
 
 }
