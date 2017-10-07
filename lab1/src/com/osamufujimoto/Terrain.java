@@ -13,3 +13,4 @@ public enum Terrain {
     OUT_OF_BOUNDS,
     UNKNOWN,
 }
+

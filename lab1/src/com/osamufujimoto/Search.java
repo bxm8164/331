@@ -3,16 +3,15 @@ package com.osamufujimoto;
 import java.io.File;
 import java.util.*;
 
-import static com.osamufujimoto.Util.LOGD;
-import static com.osamufujimoto.Util.PRINT;
+import static com.osamufujimoto.Util.*;
 import static com.osamufujimoto.Util.manhattanDistance;
 
 public class Search {
 
 
-    private final Node _start;
+    private  Node _start;
 
-    private final Node _goal;
+    private Node _goal = null;
 
     public HashMap<Node, Node> cameFrom = new HashMap<>();
 
@@ -69,14 +68,33 @@ public class Search {
         }
         */
 
-
     }
 
+    public Search(Node[][] all) { _all = all; }
+
+    public void setStart(Node start) { _start = start; }
+
+    public void setGoal(Node goal) { _goal = goal; }
+
+
+
     public void find() {
+
+        if (_start == null || _goal == null) {
+
+            LOGE("Start/Goal is null. Exiting");
+
+            return;
+
+        }
 
         open.clear();
 
         closed.clear();
+
+        f.clear();
+
+        g.clear();
 
         open.add(_start);
 
@@ -111,9 +129,11 @@ public class Search {
 
             Main.successors(current, _all);
 
+            LOGD(String.format("%s has %d successors", current.toString(), current.sucessors.size()));
             for (Node edge : current.sucessors) {
 
                 if (closed.contains(edge)) {
+
                     continue;
                 }
 
@@ -148,6 +168,11 @@ public class Search {
 
     public static double heuristic(Node s, Node g) {
 
+        if (g.t == Terrain.OUT_OF_BOUNDS || s.t == Terrain.LAKE_SWAP_MARSH) {
+            return 999;
+        }
+
+
         return manhattanDistance(s, g);
 
         // return 1.0;
@@ -176,6 +201,8 @@ public class Search {
         for (Node node : path) {
             PRINT(node.toString());
         }
+
+        cameFrom.clear();
 
         // Main._plotCoursePoints(path, new File("terrain.png"));
 

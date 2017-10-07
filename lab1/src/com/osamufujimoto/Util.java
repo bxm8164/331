@@ -1,5 +1,7 @@
 package com.osamufujimoto;
 
+import java.util.List;
+
 /**
  * @author Osamu Fujimoto
  */
@@ -53,8 +55,14 @@ public class Util {
         }
     }
 
+    public static void LOGI(String s) {
+        if (!NOP) {
+            System.out.println(YELLOW + s + RESET);
+        }
+    }
+
     /**
-     * Calculate the distance between two points
+     * Calculate the euclidean distance between two points
      * @param x the first x coordinate
      * @param y the first y coordinate
      * @param _x the second x coordinate
@@ -67,7 +75,7 @@ public class Util {
     }
 
     /**
-     * Calculate the distance between two nodes
+     * Calculate the euclidean distance between two nodes
      * @param o1 the first node
      * @param o2 the second node
      * @return the distance between the first and the second node.
@@ -77,13 +85,50 @@ public class Util {
         return distance(o1.x, o1.y, o2.x, o2.y);
     }
 
-    public static double manhattanDistance(Node o1, Node o2) {
+    /**
+     * Calculate the manhattan distance between two points
+     * @param x the first x coordinate
+     * @param y the first y coordinate
+     * @param _x the second x coordinate
+     * @param _y the second y coordinate
+     * @return the distance between (x, y) and (_x, _y)
+     */
+    public static double manhattanDistance(int x, int y, int _x, int _y) {
 
-        double dx = Math.abs(o1.x - o2.x);
+        double dx = Math.abs(x - _x);
 
-        double dy = Math.abs(o1.y - o1.y);
+        double dy = Math.abs(y - _y);
 
         return 1.0 * (dx + dy);
+
+    }
+
+    /**
+     * Calculate the manhattan distance between two nodes
+     * @param o1 the first node
+     * @param o2 the second node
+     * @return the distance between the first and the second node.
+     */
+    public static double manhattanDistance(Node o1, Node o2) {
+
+        return manhattanDistance(o1.x, o1.y, o2.x, o2.y);
+    }
+
+    public static String terrainType(Terrain terrain) {
+
+        return terrain.toString();
+
+    }
+
+    public static void printTerrainType(List<Node> nodes) {
+
+        for (Node node : nodes) {
+
+//            Test.testBrownPath(node);
+
+            PRINT(node.toString() + ": " + terrainType(node.t));
+
+        }
     }
 
 

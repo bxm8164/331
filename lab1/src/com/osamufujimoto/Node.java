@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.osamufujimoto.Util.LOGD;
+
 public class Node {
 
     /**
@@ -58,6 +60,7 @@ public class Node {
     }
 
     public Node(int x, int y, Terrain t, double e, Color c) {
+
         this(x, y, t, e);
 
         this.c = c;
@@ -71,7 +74,11 @@ public class Node {
      */
     public void addSuccessor(Node node) {
 
-        sucessors.add(node);
+        if (node.t != Terrain.OUT_OF_BOUNDS || node.t != Terrain.LAKE_SWAP_MARSH) {
+            sucessors.add(node);
+        } else {
+            LOGD("Node skipped (Reason: out of bounds)");
+        }
     }
 
     /**

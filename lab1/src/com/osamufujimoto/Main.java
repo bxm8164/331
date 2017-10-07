@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.osamufujimoto.Util.PRINT;
+import static com.osamufujimoto.Util.*;
 
 public class Main {
 
@@ -49,51 +49,26 @@ public class Main {
 
         Node[][] n = read(image, elevations);
 
-        // plotCoursePoints(brown /* course */,  image);
-
-        // successors(n[2][2], n);
-
-        // _printSuccessors(n[2][2]);
-
-
-        // 230 327
-        // 241 347
-
-        //
-        // 269 346
-        // 270 353
-
-        // Search s = new Search(n[327][230], n[347][230], n);
-
-        // Search s = new Search(n[327][230], n[347][241], n);
-
-        /**
-        ArrayList<Node> nn = new ArrayList<>();
-        for (int i = 0; i < 500; i++) {
-
-            for (int j = 0; j < 395; j++) {
-
-                nn.add(n[i][j]);
-            }
-        }
-
-        _plotCoursePoints(nn, new File("terrain.png"));
-         **/
-
-
-        //s.find();
-
-        // s.rebuildPath();
+        LOGD("Read elevations: OK");
 
         List<Node> nodes = _readInputFile(new File("brown.txt"), n);
 
-        PRINT ("Number of nodes: " + nodes.size());
+        LOGD("Read image: OK");
 
-        List<Node> fullPath = new ArrayList<>();
+        LOGI ("Number of checkpoints: " + nodes.size());
 
-        for (int i = 0; i < nodes.size() - 1; i++) {
+        List<Node> fullPath;
+
+        Search search = new Search(n);
+
+
+        for (int i = 0; i < nodes.size() - 1 && false; i++) {
 
             Search s = new Search(nodes.get(i), nodes.get(i + 1), n);
+
+            // search.setStart(nodes.get(i));
+
+            // search.setGoal(nodes.get(i + 1));
 
             s.find();
 
@@ -101,10 +76,16 @@ public class Main {
 
             fullPath.addAll(s.all);
 
+            s.all.clear();
 
+            if (i == 4) break;
         }
 
-        _plotCoursePoints(fullPath, new File("terrain.png"));
+        printTerrainType(nodes);
+
+        _plotCoursePoints(nodes, new File("terrain.png"));
+
+        //_plotCoursePoints(nodes, new File("terrain.png"), new File("terrain_white_locations"));
     }
 
     public static List<Node> _readInputFile(File _input, Node[][] nodes) {
@@ -122,9 +103,9 @@ public class Main {
 
                 String[] s = line.split(" ");
 
-                int y = Integer.parseInt(s[0]);
+                int x = Integer.parseInt(s[0]);
 
-                int x = Integer.parseInt(s[1]);
+                int y = Integer.parseInt(s[1]);
 
                 Node node = nodes[y][x];
 
@@ -140,10 +121,21 @@ public class Main {
     }
 
 
+    public static void _plotCoursePoints(List<Node> nodes, File _image, File _output) {
+
+        File _save = output; /* save the original file to a temp variable */
+
+        output = _output;
+
+        _plotCoursePoints(nodes, _image);
+
+        output = _save; /* restore the file */
+
+    }
     public static void _plotCoursePoints(List<Node> nodes, File _image) {
         try {
 
-            System.out.println("Here...!");
+            // System.out.println("Here...!");
 
             BufferedImage image = ImageIO.read(_image);
 
@@ -152,16 +144,12 @@ public class Main {
             for (Node node : nodes) {
 
 
-                int x = node.x;
-
-                int y = node.y;
-
                 int color = new Color(255, 0 , 0).getRGB();
 
                 //
                 // image.setRGB(x, y,  node.c.getRGB()); // red
 
-                image.setRGB(x, y, color);
+                image.setRGB(node.x, node.y, color);
                 //
                 // Make the marker bigger
                 //
@@ -295,34 +283,33 @@ public class Main {
      */
     public static Node[][] read(File _image, File _elevation) {
 
-        final double[][] elevation = _readFile(_elevation);
+        // final double[][] elevation = _readFile(_elevation);
 
         Node[][] node = new Node[500][395];
+
+        // ArrayList<ArrayList<Node>> nds = new ArrayList<>();
 
         try {
 
             BufferedImage image = ImageIO.read(_image);
 
-            for (int i = 0; i < 500; i++) {
+            for (int y = 0; y < 500; y++) {
 
-                for (int j = 0; j < 395; j++) {
+                // ArrayList<Node> nodesX = new ArrayList<>();
 
-                    Color color = new Color(image.getRGB(j, i));
+                for (int x = 0; x < 395; x++) {
+
+                    Color color = new Color(image.getRGB(x, y));
 
                     Terrain t = getTerrainType(color.getRed(), color.getGreen(), color.getBlue());
 
-                    //
-                    // Throw an Exception if the terrain type is not defined in
-                    // https://www.cs.rit.edu/~zjb/courses/331/proj1/
-                    //
-                    if (Terrain.UNKNOWN == t) {
+                    node[y][x] = new Node(x, y, t, 0.0, color);
 
-                        throw new Exception();
-                    }
-
-                    node[i][j] = new Node(j, i, t, elevation[i][j], color);
+                    // nodesX.add(new Node(x, y, t, 0.0));
 
                 }
+
+                // nds.add(nodesX);
 
             }
 
@@ -335,13 +322,7 @@ public class Main {
         return node;
     }
 
-    /**
-     * Get the type of terrain depending on the RGB values.
-     * @param r the red channel
-     * @param g the green channel
-     * @param b the blue channel
-     * @return the type of terrain
-     */
+    /** Get the terran type **/
     private static Terrain getTerrainType(int r, int g, int b) {
 
         if (r == 248 && g == 148 && b == 18) {
@@ -379,15 +360,12 @@ public class Main {
     }
 
 
-    /**
-     * Read the elevations values from a file.
-     * @param _text The text file
-     * @return an array containing the elevations
-     */
+    /** Implement later **/
     private static double[][] _readFile(File _text) {
 
-        double[][] result = new double[500][395];
+        double[][] result = new double[395][500];
 
+        /*
         try {
 
             BufferedReader reader = new BufferedReader(new FileReader(_text));
@@ -417,6 +395,7 @@ public class Main {
             ex.printStackTrace();
 
         }
+        */
         return result;
     }
 
