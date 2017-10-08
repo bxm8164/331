@@ -25,47 +25,6 @@ public class Util {
      */
     private static boolean NOP = false;
 
-
-    public static void LOGNODE(Node current, Node next, double d) {
-
-        if (current == null) {
-
-            LOGD(next.toString() + ": " + d);
-
-        }
-
-        else {
-
-            if (next.x - current.x == 1) {
-
-                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "right", next.t.toString(), d));
-
-            }
-
-            if (current.x - next.x == 1) {
-
-                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "left", next.t.toString(), d));
-
-            }
-
-            if (next.x - current.x == 1) {
-
-                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "up", next.t.toString(), d));
-
-            }
-
-            if (next.x - current.x == 1) {
-
-                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "bottom", next.t.toString(), d));
-
-            }
-
-
-
-
-        }
-
-    }
     /**
      * Print debug message
      * @param s the message
@@ -75,7 +34,6 @@ public class Util {
             System.out.println(GREEN + s + RESET);
         }
     }
-
 
     /**
      * Print message
@@ -95,6 +53,10 @@ public class Util {
         }
     }
 
+    /**
+     * Print information message
+     * @param s the mesage
+     */
     public static void LOGI(String s) {
         if (!NOP) {
             System.out.println(YELLOW + s + RESET);
@@ -154,12 +116,21 @@ public class Util {
         return manhattanDistance(o1.x, o1.y, o2.x, o2.y);
     }
 
+    /**
+     * Print the string representation of terrain
+     * @param terrain
+     * @return
+     */
     public static String terrainType(Terrain terrain) {
 
         return terrain.toString();
 
     }
 
+    /**
+     * Print the terrain type of a list of nodes
+     * @param nodes the list of nodes
+     */
     public static void printTerrainType(List<Node> nodes) {
 
         for (Node node : nodes) {
@@ -169,7 +140,13 @@ public class Util {
         }
     }
 
-    /** Get the terran type **/
+    /**
+     * Get the terrain type given its color.
+     * @param r the red channel
+     * @param g the green channel
+     * @param b the blue channel
+     * @return the type of terrain.
+     */
     public static Terrain getTerrainType(int r, int g, int b) {
 
         if (r == 248 && g == 148 && b == 18) {
@@ -212,89 +189,70 @@ public class Util {
      * @return the expected cost.
      */
     public static double getTerrainCost(Terrain terrain) {
-        if (Terrain.OPEN_LAND == terrain) { // open land
+
+        if (Terrain.OPEN_LAND == terrain) {                 // orange
             return 1.015;
         }
-        else if (Terrain.ROUGH_MEADOW == terrain) {
+        else if (Terrain.ROUGH_MEADOW == terrain) {         // light orange
             return 1.50;
         }
-        else if (Terrain.EASY_MOVEMENT_FOREST == terrain) {
+        else if (Terrain.EASY_MOVEMENT_FOREST == terrain) { // white
             return 1.05;
         }
-        else if (Terrain.SLOW_RUN_FOREST == terrain) {
+        else if (Terrain.SLOW_RUN_FOREST == terrain) {      // light green
             return 1.10;
         }
-        else if (Terrain.WALK_FOREST == terrain) {
+        else if (Terrain.WALK_FOREST == terrain) {          // green
             return 1.12;
         }
-        else if (Terrain.IMPASSIBLE_VEGETATION == terrain) {
+        else if (Terrain.IMPASSIBLE_VEGETATION == terrain) {// dark green
             return 999;
         }
-        else  if (Terrain.PAVED_ROAD == terrain) { // brown
+        else  if (Terrain.PAVED_ROAD == terrain) {          // brown
             return 1.0;
         }
-        else if (Terrain.FOOTPATH == terrain) { // black
+        else if (Terrain.FOOTPATH == terrain) {             // black
             return 1.015;
         }
+        // blue, dark pink
         else if (Terrain.LAKE_SWAP_MARSH == terrain || Terrain.OUT_OF_BOUNDS == terrain) {
-            return 999999;
+            return Double.MAX_VALUE;
         } else {
-            return 999999;
+            return Double.MAX_VALUE;
 
         }
     }
 
 
+    /**
+     * Get the direction of the successor of a node
+     * @param current the current node
+     * @param next the next node
+     * @return the direction of the next node
+     */
     public static Direction getNodeDirection(Node current, Node next) {
 
-        //PRINT("Called with " + current.toString() + " and "  + next.toString());
         if (current == null || next == null) {
-
             return null;
-
         }
 
         int dx = next.x - current.x;
         int dy = next.y - current.y;
 
-        // LOGD("(dx, dy): " + dx + ", " + dy);
 
-        if (dy == 1)
+        if (dy == 1) {
             return Direction.TOP;
-        if (dy == -1)
+        } else if (dy == -1) {
             return Direction.BOTTOM;
-        if (dx == 1)
+        } else if (dx == 1) {
             return Direction.RIGHT;
-        if (dx == -1)
+        } else if (dx == -1) {
             return Direction.LEFT;
-
-        /*
-        if (next.x - current.x == 1) {
-
-            return Direction.RIGHT;
-
+        } else {
+            return null;
         }
 
-        else if (current.x - next.x == 1) {
 
-
-            return Direction.LEFT;
-        }
-
-        else if (next.x - current.x == 1) {
-
-            return Direction.TOP;
-
-        }
-
-        else if (current.x - next.x == 1) {
-
-            return Direction.BOTTOM;
-
-        }*/
-
-        assert(false);
-        return null;
     }
 
 

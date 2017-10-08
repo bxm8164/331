@@ -6,10 +6,14 @@ import java.util.List;
 
 import static com.osamufujimoto.Util.LOGD;
 
+/**
+ * A node represent a single pixel of an image
+ * @author Osamu Fujimoto
+ */
 public class Node {
 
     /**
-     *  The x coordinatae
+     *  The x coordinate
      */
     public final int x;
 
@@ -29,12 +33,13 @@ public class Node {
     public final double e;
 
     /**
-     * The cost of this node
+     * The color of this node
      */
-    public final double cost;
-
     public Color c;
 
+    /**
+     * The successors of this node
+     */
     public List<Node> successors = new ArrayList<>();
 
     /**
@@ -54,17 +59,21 @@ public class Node {
 
         this.e = e;
 
-        this.cost = e; /* to be changed later */
-
-
     }
 
+    /**
+     * Node constructor
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param t the terrain type
+     * @param e the elevation at this point
+     * @param c the color of the node
+     */
     public Node(int x, int y, Terrain t, double e, Color c) {
 
         this(x, y, t, e);
 
         this.c = c;
-
 
     }
 
@@ -75,7 +84,6 @@ public class Node {
     public void addSuccessor(Node node) {
 
         if (node.t != Terrain.OUT_OF_BOUNDS || node.t != Terrain.LAKE_SWAP_MARSH) {
-            // LOGD("Adding successor: " + node.toString());
             successors.add(node);
         } else {
             LOGD("Node skipped (Reason: out of bounds)");

@@ -1,5 +1,9 @@
 package com.osamufujimoto;
 
+/**
+ * The types of terrain that appears on a map
+ * @author Osamu Fujimoto
+ */
 public enum Terrain {
     OPEN_LAND,
     ROUGH_MEADOW,

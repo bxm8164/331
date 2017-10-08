@@ -8,7 +8,7 @@ import static com.osamufujimoto.Util.manhattanDistance;
 public class Search {
 
 
-    private  Node _start;
+    private Node _start;
 
     private Node _goal = null;
 
