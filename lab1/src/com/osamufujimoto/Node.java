@@ -35,7 +35,7 @@ public class Node {
 
     public Color c;
 
-    public List<Node> sucessors = new ArrayList<>();
+    public List<Node> successors = new ArrayList<>();
 
     /**
      * Node constructor
@@ -75,7 +75,8 @@ public class Node {
     public void addSuccessor(Node node) {
 
         if (node.t != Terrain.OUT_OF_BOUNDS || node.t != Terrain.LAKE_SWAP_MARSH) {
-            sucessors.add(node);
+            // LOGD("Adding successor: " + node.toString());
+            successors.add(node);
         } else {
             LOGD("Node skipped (Reason: out of bounds)");
         }

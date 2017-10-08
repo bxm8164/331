@@ -1,6 +1,5 @@
 package com.osamufujimoto;
 
-import java.io.File;
 import java.util.*;
 
 import static com.osamufujimoto.Util.*;
@@ -19,27 +18,27 @@ public class Search {
 
     private HashMap<Node, Double> f = new HashMap<>();
 
-    public Comparator<Node> comparator = (o1, o2) -> {
-
-        if (f.get(o1) < f.get(o2)) {
-
-            return -1;
-
-        } else if (f.get(o1) > f.get(o2)) {
-
-            return 1;
-
-        } else {
-
-            return 0;
-
-        }
-
-    };
 
     private Node[][] _all;
 
-    private PriorityQueue<Node> open = new PriorityQueue<>(comparator);
+    private PriorityQueue<Node> open = new PriorityQueue<>(new Comparator<Node>() {
+        @Override
+        public int compare(Node o1, Node o2) {
+            if (f.get(o1) < f.get(o2)) {
+
+                return -1;
+
+            } else if (f.get(o1) > f.get(o2)) {
+
+                return 1;
+
+            } else {
+
+                return 0;
+
+            }
+        }
+    });
 
     private ArrayList<Node> closed = new ArrayList<>();
 
@@ -51,30 +50,8 @@ public class Search {
 
         _all = all;
 
-        /*
-        for (int i = 0; i < 500; i++) {
-
-            for (int j = 0; j < 395; j++) {
-
-                //
-                // Start node to the current node
-                //
-                g.put(all[i][j], Util.distance(_start, all[i][j]));
-
-                f.put(all[i][j], Double.MAX_VALUE );
-
-
-            }
-        }
-        */
-
     }
 
-    public Search(Node[][] all) { _all = all; }
-
-    public void setStart(Node start) { _start = start; }
-
-    public void setGoal(Node goal) { _goal = goal; }
 
 
 
@@ -118,6 +95,8 @@ public class Search {
 
             Node current = open.poll();
 
+            LOGI("Getting the node with the lowest f value: " + current.toString());
+
             if (current == _goal) {
 
                 rebuildPath(current);
@@ -129,9 +108,11 @@ public class Search {
 
             Main.successors(current, _all);
 
-            LOGD(String.format("%s has %d successors", current.toString(), current.sucessors.size()));
-            for (Node edge : current.sucessors) {
+            // LOGD(String.format("%s has %d successors", current.toString(), current.successors.size()));
 
+            for (Node edge : current.successors) {
+
+                // already evaluated
                 if (closed.contains(edge)) {
 
                     continue;
@@ -139,43 +120,128 @@ public class Search {
 
                 double tG = g.get(current) + manhattanDistance(current, edge);
 
-                if (!open.contains(edge)) {
 
+                if (!open.contains(edge)) {
+                    // LOGI("Discovered a new node: " + edge.toString());
                     open.add(edge);
 
                 }
 
-                else if (tG >= g.get(edge)) {
+                // Distance from the start to the neighbor
 
+                else if (tG >= g.get(edge)) {
+                    // LOGI("This is not a better path");
                     continue;
                 }
 
+                // LOGD("Recording path: " + edge.toString());
                 cameFrom.put(edge, current);
 
                 g.put(edge, tG);
 
-                double estimated = g.get(edge) + heuristic(edge, _goal);
+                double estimated = g.get(edge) + heuristic(edge, _goal, current);
+
+                // LOGI("(F) Edge " + edge.toString() + " with cost " + estimated);
 
                 f.put(edge, estimated);
 
+                open.remove(edge);
+                open.add(edge);
 
             }
 
+
+
+            // LOGI("Next: " + open.peek().toString());
+
+            //reak;
 
         }
 
     }
 
-    public static double heuristic(Node s, Node g) {
+    public double heuristic(Node s, Node g) {
+
+        return distance(s, g) * getTerrainCost(s.t);
+
+        // Right
+    }
+
+    public  double heuristic(Node s, Node g, Node current) {
 
         if (g.t == Terrain.OUT_OF_BOUNDS || s.t == Terrain.LAKE_SWAP_MARSH) {
             return 999;
         }
 
+        // get the successor direction
+        Node next = null;
 
-        return manhattanDistance(s, g);
 
-        // return 1.0;
+            // LOGD("Sucessor: " + s.toString());
+            // LOGD("Current: " + current.toString());
+
+            Direction d = getNodeDirection(current, s);
+
+            try {
+                if (d == Direction.BOTTOM) {
+
+                    next = _all[s.y - 1][s.x];
+
+                }
+                if (d == Direction.TOP) {
+                    next = _all[s.y + 1][s.x];
+
+                }
+                if (d == Direction.LEFT) {
+                    next = _all[s.y][s.x - 1];
+
+                }
+                if (d == Direction.RIGHT) {
+                    next = _all[s.y - 1][s.x + 1];
+
+                }
+            } catch (Exception ex) {
+                next = g;
+            }
+
+            return (manhattanDistance(s, g) * getTerrainCost(s.t)) + manhattanDistance(next, g) * next.e * getTerrainCost(next.t);
+
+
+
+    }
+
+    public HashMap<Direction, List<Node>> twosuccessors(Node node) {
+
+        HashMap<Direction, List<Node>> ss = new HashMap<>();
+
+        final int x = node.x;
+        final int y = node.y;
+        // left
+        List<Node> L = new ArrayList<>();
+        L.add(_all[y][x - 1]);
+        L.add(_all[y][x-2]);
+        ss.put(Direction.LEFT, L);
+
+        // right
+        List<Node> R = new ArrayList<>();
+        R.add(_all[y][x + 1]);
+        R.add(_all[y][x + 2]);
+        ss.put(Direction.RIGHT, R);
+
+        // top
+        List<Node> T = new ArrayList<>();
+        T.add(_all[y + 1][x]);
+        T.add(_all[y + 2][x]);
+        ss.put(Direction.TOP, T);
+
+        // bottom
+        List<Node> B = new ArrayList<>();
+        B.add(_all[y - 1][x]);
+        B.add(_all[y - 2][x]);
+        ss.put(Direction.BOTTOM, B);
+
+        return ss;
+
     }
 
 

@@ -26,6 +26,46 @@ public class Util {
     private static boolean NOP = false;
 
 
+    public static void LOGNODE(Node current, Node next, double d) {
+
+        if (current == null) {
+
+            LOGD(next.toString() + ": " + d);
+
+        }
+
+        else {
+
+            if (next.x - current.x == 1) {
+
+                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "right", next.t.toString(), d));
+
+            }
+
+            if (current.x - next.x == 1) {
+
+                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "left", next.t.toString(), d));
+
+            }
+
+            if (next.x - current.x == 1) {
+
+                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "up", next.t.toString(), d));
+
+            }
+
+            if (next.x - current.x == 1) {
+
+                LOGD(String.format("%s (%s:%s) -> %f", next.toString(), "bottom", next.t.toString(), d));
+
+            }
+
+
+
+
+        }
+
+    }
     /**
      * Print debug message
      * @param s the message
@@ -164,6 +204,96 @@ public class Util {
         }
 
         return Terrain.UNKNOWN;
+    }
+
+    /**
+     * Get the terrain cost
+     * @param terrain the terrain
+     * @return the expected cost.
+     */
+    public static double getTerrainCost(Terrain terrain) {
+        if (Terrain.OPEN_LAND == terrain) { // open land
+            return 0.75;
+        }
+        else if (Terrain.ROUGH_MEADOW == terrain) {
+            return 5.0;
+        }
+        else if (Terrain.EASY_MOVEMENT_FOREST == terrain) {
+            return 0.8;
+        }
+        else if (Terrain.SLOW_RUN_FOREST == terrain) {
+            return 1.5;
+        }
+        else if (Terrain.WALK_FOREST == terrain) {
+            return 2.5;
+        }
+        else if (Terrain.IMPASSIBLE_VEGETATION == terrain) {
+            return 999;
+        }
+        else  if (Terrain.PAVED_ROAD == terrain) { // brown
+            return 0.5;
+        }
+        else if (Terrain.FOOTPATH == terrain) { // black
+            return 0.7;
+        }
+        else if (Terrain.LAKE_SWAP_MARSH == terrain || Terrain.OUT_OF_BOUNDS == terrain) {
+            return 999999;
+        } else {
+            return 999999;
+
+        }
+    }
+
+    public static Direction getNodeDirection(Node current, Node next) {
+
+        //PRINT("Called with " + current.toString() + " and "  + next.toString());
+        if (current == null || next == null) {
+
+            return null;
+
+        }
+
+        int dx = next.x - current.x;
+        int dy = next.y - current.y;
+
+        // LOGD("(dx, dy): " + dx + ", " + dy);
+
+        if (dy == 1)
+            return Direction.TOP;
+        if (dy == -1)
+            return Direction.BOTTOM;
+        if (dx == 1)
+            return Direction.RIGHT;
+        if (dx == -1)
+            return Direction.LEFT;
+
+        /*
+        if (next.x - current.x == 1) {
+
+            return Direction.RIGHT;
+
+        }
+
+        else if (current.x - next.x == 1) {
+
+
+            return Direction.LEFT;
+        }
+
+        else if (next.x - current.x == 1) {
+
+            return Direction.TOP;
+
+        }
+
+        else if (current.x - next.x == 1) {
+
+            return Direction.BOTTOM;
+
+        }*/
+
+        assert(false);
+        return null;
     }
 
 

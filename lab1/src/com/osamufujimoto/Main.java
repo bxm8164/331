@@ -59,7 +59,7 @@ public class Main {
 
         List<Node> fullPath = new ArrayList<>();
 
-        Search search = new Search(n);
+        // Search search = new Search(n);
 
 
         for (int i = 0; i < nodes.size() - 1 && true; i++) {
@@ -235,7 +235,7 @@ public class Main {
      */
     private static void _printSuccessors(Node node) {
 
-        for (Node successors : node.sucessors) {
+        for (Node successors : node.successors) {
 
             PRINT(successors.toString());
 
