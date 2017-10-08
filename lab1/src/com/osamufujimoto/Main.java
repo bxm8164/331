@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.osamufujimoto.Util.*;
 
@@ -47,7 +48,11 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        Node[][] n = IO.read(image, elevations);
+        int[][] water = new int[500][395];
+
+        Node[][] n = IO.read(image, elevations, water);
+
+        Set<Node> bound = IO.findEdges(water, n);
 
         LOGD("Read elevations: OK");
 
@@ -62,9 +67,9 @@ public class Main {
         // Search search = new Search(n);
 
 
-        for (int i = 0; i < nodes.size() - 1 && true; i++) {
+        for (int i = 0; i < nodes.size() - 1 ; i++) {
 
-            Search s = new Search(nodes.get(i), nodes.get(i + 1), n);
+            Search s = new Search(nodes.get(i), nodes.get(i + 1), n, bound);
 
             // search.setStart(nodes.get(i));
 
@@ -81,6 +86,12 @@ public class Main {
         }
 
         printTerrainType(nodes);
+
+        /*
+        try {
+            Printer.plotEdges(bound, new File("edges.png"));
+        } catch (Exception ex) { ex.printStackTrace(); }
+        */
 
         _plotCoursePoints(fullPath, new File("terrain.png"));
 

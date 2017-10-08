@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class IO {
 
@@ -56,7 +58,7 @@ public class IO {
      * @param _elevation the text file
      * @return
      */
-    public static Node[][] read(final File _image, final File _elevation) {
+    public static Node[][] read(final File _image, final File _elevation, int[][] water) {
 
         final double[][] elevation = readTextFile(_elevation);
 
@@ -78,8 +80,10 @@ public class IO {
 
                     node[y][x] = new Node(x, y, t, elevation[y][x], color);
 
-                    if (elevation[y][x] == 0.0) {
-                        break;
+                    if (t == Terrain.LAKE_SWAP_MARSH) {
+
+                        water[y][x] = 1;
+
                     }
 
                 }
@@ -93,6 +97,34 @@ public class IO {
         }
 
         return node;
+    }
+
+    public static Set<Node> findEdges(int[][] water, Node[][] all) {
+
+        Set<Node> set = new LinkedHashSet<>();
+
+        for (int y = 0; y < 500; y++) {
+
+            for (int x = 0; x < 395; x++) {
+
+                if (water[y][x] == 1) {
+
+                    Main.successors(all[y][x], all);
+
+                    for (Node scs : all[y][x].successors) {
+
+                        if (scs.t != Terrain.OUT_OF_BOUNDS) {
+
+                            set.add(scs);
+
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return set;
     }
 
     public static List<Node> readInputFile(File _input, Node[][] nodes) {
@@ -126,6 +158,8 @@ public class IO {
         return all;
 
     }
+
+
 
 
 }

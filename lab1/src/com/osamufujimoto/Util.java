@@ -213,28 +213,28 @@ public class Util {
      */
     public static double getTerrainCost(Terrain terrain) {
         if (Terrain.OPEN_LAND == terrain) { // open land
-            return 0.75;
+            return 1.015;
         }
         else if (Terrain.ROUGH_MEADOW == terrain) {
-            return 5.0;
+            return 1.50;
         }
         else if (Terrain.EASY_MOVEMENT_FOREST == terrain) {
-            return 0.8;
+            return 1.05;
         }
         else if (Terrain.SLOW_RUN_FOREST == terrain) {
-            return 1.5;
+            return 1.10;
         }
         else if (Terrain.WALK_FOREST == terrain) {
-            return 2.5;
+            return 1.12;
         }
         else if (Terrain.IMPASSIBLE_VEGETATION == terrain) {
             return 999;
         }
         else  if (Terrain.PAVED_ROAD == terrain) { // brown
-            return 0.5;
+            return 1.0;
         }
         else if (Terrain.FOOTPATH == terrain) { // black
-            return 0.7;
+            return 1.015;
         }
         else if (Terrain.LAKE_SWAP_MARSH == terrain || Terrain.OUT_OF_BOUNDS == terrain) {
             return 999999;
@@ -243,6 +243,7 @@ public class Util {
 
         }
     }
+
 
     public static Direction getNodeDirection(Node current, Node next) {
 

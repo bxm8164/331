@@ -18,6 +18,8 @@ public class Search {
 
     private HashMap<Node, Double> f = new HashMap<>();
 
+    private Set<Node> edges;
+
 
     private Node[][] _all;
 
@@ -42,13 +44,15 @@ public class Search {
 
     private ArrayList<Node> closed = new ArrayList<>();
 
-    public Search(Node start, Node goal, Node[][] all) {
+    public Search(Node start, Node goal, Node[][] all, Set<Node> edges ) {
 
         _start = start;
 
         _goal = goal;
 
         _all = all;
+
+        this.edges = edges;
 
     }
 
@@ -95,7 +99,7 @@ public class Search {
 
             Node current = open.poll();
 
-            LOGI("Getting the node with the lowest f value: " + current.toString());
+            // LOGI("Getting the node with the lowest f value: " + current.toString());
 
             if (current == _goal) {
 
@@ -118,7 +122,7 @@ public class Search {
                     continue;
                 }
 
-                double tG = g.get(current) + manhattanDistance(current, edge);
+                double tG = g.get(current) + distance(current, edge);
 
 
                 if (!open.contains(edge)) {
@@ -141,17 +145,20 @@ public class Search {
 
                 double estimated = g.get(edge) + heuristic(edge, _goal, current);
 
-                // LOGI("(F) Edge " + edge.toString() + " with cost " + estimated);
+                // LOGI("(f) Edge " + edge.toString() + " is " + edge.t.toString() + " with cost " + estimated);
 
                 f.put(edge, estimated);
 
                 open.remove(edge);
                 open.add(edge);
 
+
+
             }
 
 
 
+            //
             // LOGI("Next: " + open.peek().toString());
 
             //reak;
@@ -170,11 +177,12 @@ public class Search {
     public  double heuristic(Node s, Node g, Node current) {
 
         if (g.t == Terrain.OUT_OF_BOUNDS || s.t == Terrain.LAKE_SWAP_MARSH) {
-            return 999;
+            return Double.MAX_VALUE;
         }
 
         // get the successor direction
         Node next = null;
+
 
 
             // LOGD("Sucessor: " + s.toString());
@@ -200,11 +208,14 @@ public class Search {
                     next = _all[s.y - 1][s.x + 1];
 
                 }
+
             } catch (Exception ex) {
                 next = g;
             }
 
-            return (manhattanDistance(s, g) * getTerrainCost(s.t)) + manhattanDistance(next, g) * next.e * getTerrainCost(next.t);
+            return (distance(s, g) * s.e * getTerrainCost(s.t)) + distance(next, g) * next.e * getTerrainCost(next.t);
+
+
 
 
 
