@@ -221,40 +221,6 @@ public class Search {
 
     }
 
-    public HashMap<Direction, List<Node>> twosuccessors(Node node) {
-
-        HashMap<Direction, List<Node>> ss = new HashMap<>();
-
-        final int x = node.x;
-        final int y = node.y;
-        // left
-        List<Node> L = new ArrayList<>();
-        L.add(_all[y][x - 1]);
-        L.add(_all[y][x-2]);
-        ss.put(Direction.LEFT, L);
-
-        // right
-        List<Node> R = new ArrayList<>();
-        R.add(_all[y][x + 1]);
-        R.add(_all[y][x + 2]);
-        ss.put(Direction.RIGHT, R);
-
-        // top
-        List<Node> T = new ArrayList<>();
-        T.add(_all[y + 1][x]);
-        T.add(_all[y + 2][x]);
-        ss.put(Direction.TOP, T);
-
-        // bottom
-        List<Node> B = new ArrayList<>();
-        B.add(_all[y - 1][x]);
-        B.add(_all[y - 2][x]);
-        ss.put(Direction.BOTTOM, B);
-
-        return ss;
-
-    }
-
 
     List<Node> all = new ArrayList<>();
 

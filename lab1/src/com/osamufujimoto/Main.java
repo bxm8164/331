@@ -56,7 +56,7 @@ public class Main {
 
         LOGD("Read elevations: OK");
 
-        List<Node> nodes = IO.readInputFile(new File("brown.txt"), n);
+        List<Node> nodes = IO.readInputFile(new File("red.txt"), n);
 
         LOGD("Read image: OK");
 
