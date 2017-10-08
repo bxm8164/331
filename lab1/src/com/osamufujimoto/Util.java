@@ -124,11 +124,46 @@ public class Util {
 
         for (Node node : nodes) {
 
-//            Test.testBrownPath(node);
-
             PRINT(node.toString() + ": " + terrainType(node.t));
 
         }
+    }
+
+    /** Get the terran type **/
+    public static Terrain getTerrainType(int r, int g, int b) {
+
+        if (r == 248 && g == 148 && b == 18) {
+            return Terrain.OPEN_LAND;
+        }
+        if (r == 255 && g == 192 && b == 0) {
+            return Terrain.ROUGH_MEADOW;
+        }
+        if (r == 255 && g == 255 && b == 255) {
+            return Terrain.EASY_MOVEMENT_FOREST;
+        }
+        if (r == 2 && g == 208 && b == 60) {
+            return Terrain.SLOW_RUN_FOREST;
+        }
+        if (r == 2 && g == 136 && b == 40) {
+            return Terrain.WALK_FOREST;
+        }
+        if (r == 5 && g == 73 && b == 24) {
+            return Terrain.IMPASSIBLE_VEGETATION;
+        }
+        if (r == 0 && g == 0 && b == 255) {
+            return Terrain.LAKE_SWAP_MARSH;
+        }
+        if (r == 71 && g == 51 && b == 3) {
+            return Terrain.PAVED_ROAD;
+        }
+        if (r == 0 && g == 0 && b == 0) {
+            return Terrain.FOOTPATH;
+        }
+        if (r == 205 && g == 0 && b == 101) {
+            return Terrain.OUT_OF_BOUNDS;
+        }
+
+        return Terrain.UNKNOWN;
     }
 
 

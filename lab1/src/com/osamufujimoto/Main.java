@@ -47,22 +47,22 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        Node[][] n = read(image, elevations);
+        Node[][] n = IO.read(image, elevations);
 
         LOGD("Read elevations: OK");
 
-        List<Node> nodes = _readInputFile(new File("brown.txt"), n);
+        List<Node> nodes = IO.readInputFile(new File("brown.txt"), n);
 
         LOGD("Read image: OK");
 
         LOGI ("Number of checkpoints: " + nodes.size());
 
-        List<Node> fullPath;
+        List<Node> fullPath = new ArrayList<>();
 
         Search search = new Search(n);
 
 
-        for (int i = 0; i < nodes.size() - 1 && false; i++) {
+        for (int i = 0; i < nodes.size() - 1 && true; i++) {
 
             Search s = new Search(nodes.get(i), nodes.get(i + 1), n);
 
@@ -78,47 +78,16 @@ public class Main {
 
             s.all.clear();
 
-            if (i == 4) break;
         }
 
         printTerrainType(nodes);
 
-        _plotCoursePoints(nodes, new File("terrain.png"));
+        _plotCoursePoints(fullPath, new File("terrain.png"));
 
         //_plotCoursePoints(nodes, new File("terrain.png"), new File("terrain_white_locations"));
     }
 
-    public static List<Node> _readInputFile(File _input, Node[][] nodes) {
 
-        List<Node> all = new ArrayList<>();
-
-        try {
-
-            BufferedReader reader = new BufferedReader(new FileReader(_input));
-
-            String line;
-
-
-            while( (line = reader.readLine()) != null) {
-
-                String[] s = line.split(" ");
-
-                int x = Integer.parseInt(s[0]);
-
-                int y = Integer.parseInt(s[1]);
-
-                Node node = nodes[y][x];
-
-                all.add(node);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return all;
-
-    }
 
 
     public static void _plotCoursePoints(List<Node> nodes, File _image, File _output) {
@@ -275,129 +244,10 @@ public class Main {
 
 
 
-    /**
-     * Read the each pixel value and create a Node containing its position, terrain type and elevation
-     * @param _image the image file
-     * @param _elevation the text file
-     * @return
-     */
-    public static Node[][] read(File _image, File _elevation) {
-
-        // final double[][] elevation = _readFile(_elevation);
-
-        Node[][] node = new Node[500][395];
-
-        // ArrayList<ArrayList<Node>> nds = new ArrayList<>();
-
-        try {
-
-            BufferedImage image = ImageIO.read(_image);
-
-            for (int y = 0; y < 500; y++) {
-
-                // ArrayList<Node> nodesX = new ArrayList<>();
-
-                for (int x = 0; x < 395; x++) {
-
-                    Color color = new Color(image.getRGB(x, y));
-
-                    Terrain t = getTerrainType(color.getRed(), color.getGreen(), color.getBlue());
-
-                    node[y][x] = new Node(x, y, t, 0.0, color);
-
-                    // nodesX.add(new Node(x, y, t, 0.0));
-
-                }
-
-                // nds.add(nodesX);
-
-            }
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-
-        }
-
-        return node;
-    }
-
-    /** Get the terran type **/
-    private static Terrain getTerrainType(int r, int g, int b) {
-
-        if (r == 248 && g == 148 && b == 18) {
-            return Terrain.OPEN_LAND;
-        }
-        if (r == 255 && g == 192 && b == 0) {
-            return Terrain.ROUGH_MEADOW;
-        }
-        if (r == 255 && g == 255 && b == 255) {
-            return Terrain.EASY_MOVEMENT_FOREST;
-        }
-        if (r == 2 && g == 208 && b == 60) {
-            return Terrain.SLOW_RUN_FOREST;
-        }
-        if (r == 2 && g == 136 && b == 40) {
-            return Terrain.WALK_FOREST;
-        }
-        if (r == 5 && g == 73 && b == 24) {
-            return Terrain.IMPASSIBLE_VEGETATION;
-        }
-        if (r == 0 && g == 0 && b == 255) {
-            return Terrain.LAKE_SWAP_MARSH;
-        }
-        if (r == 71 && g == 51 && b == 3) {
-            return Terrain.PAVED_ROAD;
-        }
-        if (r == 0 && g == 0 && b == 0) {
-            return Terrain.FOOTPATH;
-        }
-        if (r == 205 && g == 0 && b == 101) {
-            return Terrain.OUT_OF_BOUNDS;
-        }
-
-        return Terrain.UNKNOWN;
-    }
 
 
-    /** Implement later **/
-    private static double[][] _readFile(File _text) {
 
-        double[][] result = new double[395][500];
 
-        /*
-        try {
-
-            BufferedReader reader = new BufferedReader(new FileReader(_text));
-
-            String current;
-
-            //
-            // Read the 500 lines
-            //
-            for (int i = 0; i < 500; i++) {
-
-                current = reader.readLine();
-
-                String[] sp = current.split("   ");
-
-                //
-                // The first (numeric) value of sp is at index 1. Index 0 is empty.
-                //
-                for (int j = 1; j < 396; j++) {
-
-                    result[i][j - 1] = Double.parseDouble(sp[j]);
-                }
-            }
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-
-        }
-        */
-        return result;
-    }
 
 
 
