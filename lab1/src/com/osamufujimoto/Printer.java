@@ -13,7 +13,7 @@ import static com.osamufujimoto.Util.PRINT;
 
 /**
  * Printer functions.
- * @author Osamu Fujimoto
+ * @author Osamu F
  */
 public class Printer {
 

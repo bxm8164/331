@@ -196,13 +196,13 @@ public class Search {
      */
     public double heuristic(Node s, Node g) {
 
-        if (Math.abs(s.x - g.x) < 1 || Math.abs(s.y - g.y) < 1)
+        if (Math.abs(s.x - g.x) == 0 || Math.abs(s.y - g.y) == 0)
 
-            return  distance(s, g) * distance(s, g) * getTerrainCost(s.t) * (s.e * 0.95 * s.e);
+            return  distance(s, g)  * getTerrainCost(s.t) * (s.e * 1.0 * s.e);
 
         else
 
-            return  distance(s, g) * distance(s, g) * getTerrainCost(s.t) * (s.e * s.e);
+            return  distance(s, g) * getTerrainCost(s.t) * (s.e * s.e);
 
 
     }

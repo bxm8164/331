@@ -201,13 +201,13 @@ public class Util {
             return 1.15;
         }
         else if (Terrain.SLOW_RUN_FOREST == terrain) {      // light green
-            return 1.50;
+            return 1.20;
         }
         else if (Terrain.WALK_FOREST == terrain) {          // green
-            return 1.75;
+            return 1.40;
         }
         else if (Terrain.IMPASSIBLE_VEGETATION == terrain) {// dark green
-            return 999;
+            return Double.MAX_VALUE;
         }
         else  if (Terrain.PAVED_ROAD == terrain) {          // brown
             return 1.0;
