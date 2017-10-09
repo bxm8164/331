@@ -3,6 +3,7 @@ package com.osamufujimoto;
 import java.util.List;
 
 /**
+ * Utilities used by program.
  * @author Osamu Fujimoto
  */
 public class Util {

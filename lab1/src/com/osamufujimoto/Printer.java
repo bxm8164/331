@@ -11,6 +11,10 @@ import java.util.Set;
 
 import static com.osamufujimoto.Util.PRINT;
 
+/**
+ * Output. Plotting and printing functions.
+ * @author Osamu Fujimoto
+ */
 public class Printer {
 
     /**

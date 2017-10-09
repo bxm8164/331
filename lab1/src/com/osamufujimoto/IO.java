@@ -11,6 +11,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * IO. Functions to read the input files.
+ */
 public class IO {
 
     /**
@@ -64,8 +67,6 @@ public class IO {
         final double[][] elevation = readTextFile(_elevation);
 
         Node[][] node = new Node[500][395];
-
-        // ArrayList<ArrayList<Node>> nds = new ArrayList<>();
 
         try {
 
@@ -171,8 +172,5 @@ public class IO {
         return all;
 
     }
-
-
-
 
 }

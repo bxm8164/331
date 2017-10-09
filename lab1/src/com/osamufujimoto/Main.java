@@ -7,6 +7,10 @@ import java.util.Set;
 
 import static com.osamufujimoto.Util.*;
 
+/**
+ * The main program
+ * @author Osamu Fujimoto
+ */
 public class Main {
 
     /**

@@ -4,6 +4,11 @@ import java.util.*;
 
 import static com.osamufujimoto.Util.*;
 
+/**
+ * Search Class.
+ * The optimal path from the starting node to the goal node is computed here
+ * @author Osamu Fujimoto
+ */
 public class Search {
 
     /**
