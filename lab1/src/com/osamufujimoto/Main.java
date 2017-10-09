@@ -16,32 +16,38 @@ public class Main {
     /**
      * The image file
      */
-    static final File image=  new File("terrain.png");
+    static final File image
+            =  new File("terrain.png");
 
     /**
      * The elevation file
      */
-    static final File elevations = new File("mpp.txt");
+    static final File elevations
+            = new File("mpp.txt");
 
     /**
      * THe brown course
      */
-    static final File brown = new File("brown.txt");
+    static final File brown
+            = new File("brown.txt");
 
     /**
      * The red course
      */
-    static final File red = new File("red.txt");
+    static final File red
+            = new File("red.txt");
 
     /**
      * THe white course
      */
-    static final File white = new File("white.txt");
+    static final File white
+            = new File("white.txt");
 
     /**
      * THe output file
      */
-    static File output = new File("output_all_.png");
+    static File output
+            = new File("output_all_.png");
 
     /**
      * Main program
