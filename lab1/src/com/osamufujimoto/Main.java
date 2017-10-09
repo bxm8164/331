@@ -128,7 +128,8 @@ public class Main {
         for (String arg : args) {
             String[] split = arg.split(":");
             if (split[0].equals("c")) {
-                if (split[1].equals("white") || split[1].equals("brown") || split[1].equals("red")) {
+                if (split[1].equals("white") || split[1].equals("brown") || split[1].equals("red")
+                        || split[1].equals("test")) {
                     String course = split[1];
                     if (course.equals("brown")) {
                         file = new File("brown.txt");
@@ -138,6 +139,9 @@ public class Main {
                     }
                     if (course.equals("white")) {
                         file = new File("white.txt");
+                    }
+                    if (course.equals("test")) {
+                        file = new File("one.txt");
                     }
                 } else {
                     LOGI("Course not valid. Exiting");
