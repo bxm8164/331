@@ -198,13 +198,13 @@ public class Util {
             return 5.0;
         }
         else if (Terrain.EASY_MOVEMENT_FOREST == terrain) { // white
-            return 1.15;
-        }
-        else if (Terrain.SLOW_RUN_FOREST == terrain) {      // light green
             return 1.20;
         }
-        else if (Terrain.WALK_FOREST == terrain) {          // green
+        else if (Terrain.SLOW_RUN_FOREST == terrain) {      // light green
             return 1.40;
+        }
+        else if (Terrain.WALK_FOREST == terrain) {          // green
+            return 1.50;
         }
         else if (Terrain.IMPASSIBLE_VEGETATION == terrain) {// dark green
             return Double.MAX_VALUE;
@@ -213,7 +213,7 @@ public class Util {
             return 1.0;
         }
         else if (Terrain.FOOTPATH == terrain) {             // black
-            return 1.10;
+            return 1.15;
         }
         // blue, dark pink
         else if (Terrain.LAKE_SWAP_MARSH == terrain || Terrain.OUT_OF_BOUNDS == terrain) {
