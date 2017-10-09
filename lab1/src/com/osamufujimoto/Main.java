@@ -64,20 +64,14 @@ public class Main {
 
         List<Node> fullPath = new ArrayList<>();
 
-        // Search search = new Search(n);
-
 
         for (int i = 0; i < nodes.size() - 1 ; i++) {
 
             Search s = new Search(nodes.get(i), nodes.get(i + 1), n, bound);
 
-            // search.setStart(nodes.get(i));
-
-            // search.setGoal(nodes.get(i + 1));
-
             s.find();
 
-            PRINT("Working with " +  nodes.get(i).toString() + " and " + nodes.get(i+1).toString());
+            // PRINT("Working with " +  nodes.get(i).toString() + " and " + nodes.get(i+1).toString());
 
             fullPath.addAll(s.all);
 
@@ -85,118 +79,11 @@ public class Main {
 
         }
 
-        printTerrainType(nodes);
+        // printTerrainType(nodes);
 
-        /*
-        try {
-            Printer.plotEdges(bound, new File("edges.png"));
-        } catch (Exception ex) { ex.printStackTrace(); }
-        */
+        LOGI("Number of nodes: " + fullPath.size());
 
-        _plotCoursePoints(fullPath, new File("terrain.png"));
-
-        //_plotCoursePoints(nodes, new File("terrain.png"), new File("terrain_white_locations"));
-    }
-
-
-
-
-    public static void _plotCoursePoints(List<Node> nodes, File _image, File _output) {
-
-        File _save = output; /* save the original file to a temp variable */
-
-        output = _output;
-
-        _plotCoursePoints(nodes, _image);
-
-        output = _save; /* restore the file */
-
-    }
-    public static void _plotCoursePoints(List<Node> nodes, File _image) {
-        try {
-
-            // System.out.println("Here...!");
-
-            BufferedImage image = ImageIO.read(_image);
-
-
-            PRINT("Number of nodes: " + nodes.size());
-            for (Node node : nodes) {
-
-
-                int color = new Color(255, 0 , 0).getRGB();
-
-                //
-                // image.setRGB(x, y,  node.c.getRGB()); // red
-
-                image.setRGB(node.x, node.y, color);
-                //
-                // Make the marker bigger
-                //
-
-
-
-            }
-
-            ImageIO.write(image, "png", output);
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Plot the points from a file to an image
-     * @param _course the file containing the points
-     * @param _image the image
-     */
-    public static void _plotCoursePoints(File _course, File _image) {
-
-        try {
-
-            BufferedImage image = ImageIO.read(_image);
-
-            BufferedReader reader = new BufferedReader(new FileReader(_course));
-
-            String line;
-
-            while ( (line = reader.readLine()) != null ) {
-
-                String[] points = line.split(" ");
-
-                int x = Integer.parseInt(points[0]);
-
-                int y = Integer.parseInt(points[1]);
-
-                int color = new Color(255, 0 , 0).getRGB();
-
-                image.setRGB(x, y, new Color(255, 0 , 0).getRGB()); // red
-
-                //
-                // Make the marker bigger
-                //
-
-                image.setRGB(x - 1, y, color);
-                image.setRGB(x + 1, y, color);
-
-                image.setRGB(x - 1, y + 1, color);
-                image.setRGB(    x   ,y + 1, color);
-                image.setRGB(x + 1, y + 1, color);
-
-                image.setRGB(x - 1, y - 1, color);
-                image.setRGB(    x   ,y - 1, color);
-                image.setRGB(x + 1, y - 1, color);
-
-
-            }
-
-            ImageIO.write(image, "png", output);
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();
-        }
+        Printer.plotNodes(fullPath, new File("terrain.png"), output);
 
     }
 
@@ -236,30 +123,6 @@ public class Main {
                     node.addSuccessor(all[y][x - 1]);
                 }
 
-            }
-
-
-
-    /**
-     * Print the successors of a node
-     * @param node the node we want the successors
-     */
-    private static void _printSuccessors(Node node) {
-
-        for (Node successors : node.successors) {
-
-            PRINT(successors.toString());
-
-        }
     }
-
-
-
-
-
-
-
-
-
 
 }

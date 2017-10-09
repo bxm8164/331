@@ -13,9 +13,7 @@ import java.util.Set;
 
 public class IO {
 
-    /**
-     * Implement later
-     **/
+
     private static double[][] readTextFile(File _text) {
 
         double[][] result = new double[500][395];
@@ -38,7 +36,6 @@ public class IO {
 
                     result[y][x - 1] = Double.parseDouble(sp[x]);
 
-                    if (x == 1 && y == 0) System.out.println(sp[x]);
                 }
             }
 

@@ -224,9 +224,13 @@ public class Search {
 
     List<Node> all = new ArrayList<>();
 
+    /**
+     * Rebuild the path
+     * @param current the current node
+     */
     public void rebuildPath(Node current) {
 
-        System.out.println("Rebuilding path...");
+        LOGD("Rebuilding path for " + current.toString());
 
         ArrayList<Node> path = new ArrayList<>();
 
@@ -241,13 +245,7 @@ public class Search {
             all.add(current);
         }
 
-        for (Node node : path) {
-            PRINT(node.toString());
-        }
-
         cameFrom.clear();
-
-        // Main._plotCoursePoints(path, new File("terrain.png"));
 
     }
 
