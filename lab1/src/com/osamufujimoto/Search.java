@@ -236,7 +236,7 @@ public class Search {
             next = g;
         }
 
-        return (distance(s, g) * s.e * getTerrainCost(s.t)) + distance(next, g) * next.e * getTerrainCost(next.t);
+        return (distance(s, g) * Math.sqrt(s.e) * getTerrainCost(s.t)) + distance(next, g) * next.e * getTerrainCost(next.t);
 
     }
 
