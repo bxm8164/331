@@ -3,26 +3,53 @@ package com.osamufujimoto;
 import java.util.*;
 
 import static com.osamufujimoto.Util.*;
-import static com.osamufujimoto.Util.manhattanDistance;
 
 public class Search {
 
-
+    /**
+     * The starting node
+     */
     private Node _start;
 
+    /**
+     * The goal node
+     */
     private Node _goal = null;
 
+    /**
+     * Used to keep track how we reached our goal node
+     */
     public HashMap<Node, Node> cameFrom = new HashMap<>();
 
+    /**
+     * The cost from the starting node to the current node.
+     */
     private HashMap<Node, Double> g = new HashMap<>();
 
+    /**
+     * f(Node) = g(Node) + h(Node)
+     * h is an admissible heuristic function that estimates the cost form the Node to the goal.
+     */
     private HashMap<Node, Double> f = new HashMap<>();
 
-    private Set<Node> edges;
+    /**
+     * The nodes that are lake, swap and marsh and its edges.
+     */
+    private Set<Node> _edges;
 
+    /**
+     * The nodes already evaluated
+     */
+    private ArrayList<Node> closed = new ArrayList<>();
 
+    /**
+     * All the nodes in the map
+     */
     private Node[][] _all;
 
+    /**
+     * The nodes that are discovered but not yet evaluated
+     */
     private PriorityQueue<Node> open = new PriorityQueue<>(new Comparator<Node>() {
         @Override
         public int compare(Node o1, Node o2) {
@@ -42,8 +69,14 @@ public class Search {
         }
     });
 
-    private ArrayList<Node> closed = new ArrayList<>();
 
+    /**
+     * Search construct
+     * @param start the starting node
+     * @param goal the goal node
+     * @param all all the nodes in the map
+     * @param edges the nodes that are lake, swap or marsh and its edges
+     */
     public Search(Node start, Node goal, Node[][] all, Set<Node> edges ) {
 
         _start = start;
@@ -52,13 +85,13 @@ public class Search {
 
         _all = all;
 
-        this.edges = edges;
+        _edges = edges;
 
     }
 
-
-
-
+    /**
+     * Run the A* Search
+     */
     public void find() {
 
         if (_start == null || _goal == null) {
@@ -99,8 +132,6 @@ public class Search {
 
             Node current = open.poll();
 
-            // LOGI("Getting the node with the lowest f value: " + current.toString());
-
             if (current == _goal) {
 
                 rebuildPath(current);
@@ -112,68 +143,65 @@ public class Search {
 
             Main.successors(current, _all);
 
-            // LOGD(String.format("%s has %d successors", current.toString(), current.successors.size()));
-
             for (Node edge : current.successors) {
 
                 // already evaluated
                 if (closed.contains(edge)) {
-
                     continue;
                 }
 
+                // distance from the start to the neighbor
                 double tG = g.get(current) + distance(current, edge);
 
-
+                // discover a new node
                 if (!open.contains(edge)) {
-                    // LOGI("Discovered a new node: " + edge.toString());
                     open.add(edge);
 
                 }
 
-                // Distance from the start to the neighbor
-
+                // this is not a better path
                 else if (tG >= g.get(edge)) {
-                    // LOGI("This is not a better path");
                     continue;
                 }
 
-                // LOGD("Recording path: " + edge.toString());
+                // this is the best path until now
                 cameFrom.put(edge, current);
 
                 g.put(edge, tG);
 
                 double estimated = g.get(edge) + heuristic(edge, _goal, current);
 
-                // LOGI("(f) Edge " + edge.toString() + " is " + edge.t.toString() + " with cost " + estimated);
-
                 f.put(edge, estimated);
 
+                // horrible way to force an update in the priority queue.
                 open.remove(edge);
                 open.add(edge);
 
-
-
             }
-
-
-
-            //
-            // LOGI("Next: " + open.peek().toString());
-
-            //reak;
 
         }
 
     }
 
+    /**
+     * Heuristic function. Used for the starting node
+     * @param s the successor of the node
+     * @param g the goal node
+     * @return the cost from the successor to the goal
+     */
     public double heuristic(Node s, Node g) {
 
-        return distance(s, g) * getTerrainCost(s.t);
+        return distance(s, g) * getTerrainCost(s.t) * s.e;
 
-        // Right
     }
 
+    /**
+     * Heuristic function. Used for all the other nodes
+     * @param s the successor of the current node
+     * @param g the goal node
+     * @param current the current node
+     * @return the cost from the successor to the goal
+     */
     public  double heuristic(Node s, Node g, Node current) {
 
         if (g.t == Terrain.OUT_OF_BOUNDS || s.t == Terrain.LAKE_SWAP_MARSH) {
@@ -183,41 +211,27 @@ public class Search {
         // get the successor direction
         Node next = null;
 
+        Direction d = getNodeDirection(current, s);
 
-
-            // LOGD("Sucessor: " + s.toString());
-            // LOGD("Current: " + current.toString());
-
-            Direction d = getNodeDirection(current, s);
-
-            try {
-                if (d == Direction.BOTTOM) {
-
-                    next = _all[s.y - 1][s.x];
-
-                }
-                if (d == Direction.TOP) {
-                    next = _all[s.y + 1][s.x];
-
-                }
-                if (d == Direction.LEFT) {
-                    next = _all[s.y][s.x - 1];
-
-                }
-                if (d == Direction.RIGHT) {
-                    next = _all[s.y - 1][s.x + 1];
-
-                }
-
-            } catch (Exception ex) {
-                next = g;
+        try {
+            if (d == Direction.BOTTOM) {
+                next = _all[s.y - 1][s.x];
+            }
+            if (d == Direction.TOP) {
+                next = _all[s.y + 1][s.x];
+            }
+            if (d == Direction.LEFT) {
+                next = _all[s.y][s.x - 1];
+            }
+            if (d == Direction.RIGHT) {
+                next = _all[s.y - 1][s.x + 1];
             }
 
-            return (distance(s, g) * s.e * getTerrainCost(s.t)) + distance(next, g) * next.e * getTerrainCost(next.t);
+        } catch (Exception ex) {
+            next = g;
+        }
 
-
-
-
+        return (distance(s, g) * s.e * getTerrainCost(s.t)) + distance(next, g) * next.e * getTerrainCost(next.t);
 
     }
 

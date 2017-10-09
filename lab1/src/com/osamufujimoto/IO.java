@@ -13,7 +13,11 @@ import java.util.Set;
 
 public class IO {
 
-
+    /**
+     * Read a text file containing the elevation at each point of the map
+     * @param _text the text file
+     * @return an array that contains the elevation at each point
+     */
     private static double[][] readTextFile(File _text) {
 
         double[][] result = new double[500][395];
@@ -96,6 +100,12 @@ public class IO {
         return node;
     }
 
+    /**
+     * Find the nodes that are lake, swamp or marsh, or its edges
+     * @param water the nodes that are water
+     * @param all all the nodes in the map
+     * @return a set containing all the water nodes or its edges.
+     */
     public static Set<Node> findEdges(int[][] water, Node[][] all) {
 
         Set<Node> set = new LinkedHashSet<>();
@@ -124,6 +134,12 @@ public class IO {
         return set;
     }
 
+    /**
+     * Read file containing the control points we need to pass
+     * @param _input the input file
+     * @param nodes the nodes from the image
+     * @return the of control points
+     */
     public static List<Node> readInputFile(File _input, Node[][] nodes) {
 
         List<Node> all = new ArrayList<>();

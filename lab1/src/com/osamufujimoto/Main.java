@@ -1,8 +1,5 @@
 package com.osamufujimoto;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +53,7 @@ public class Main {
 
         LOGD("Read elevations: OK");
 
-        List<Node> nodes = IO.readInputFile(new File("red.txt"), n);
+        List<Node> nodes = IO.readInputFile(new File("brown.txt"), n);
 
         LOGD("Read image: OK");
 
@@ -64,22 +61,19 @@ public class Main {
 
         List<Node> fullPath = new ArrayList<>();
 
+        Search s;
 
         for (int i = 0; i < nodes.size() - 1 ; i++) {
 
-            Search s = new Search(nodes.get(i), nodes.get(i + 1), n, bound);
+            s = new Search(nodes.get(i), nodes.get(i + 1), n, bound);
 
             s.find();
-
-            // PRINT("Working with " +  nodes.get(i).toString() + " and " + nodes.get(i+1).toString());
 
             fullPath.addAll(s.all);
 
             s.all.clear();
 
         }
-
-        // printTerrainType(nodes);
 
         LOGI("Number of nodes: " + fullPath.size());
 
