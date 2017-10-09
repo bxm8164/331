@@ -197,8 +197,7 @@ public class Search {
     public double heuristic(Node s, Node g) {
 
 
-
-            return  distance(s, g) * getTerrainCost(s.t) * (s.e * s.e);
+        return  distance(s, g) * getTerrainCost(s.t) * Math.pow(s.e, 2);
 
 
     }

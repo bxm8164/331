@@ -192,28 +192,28 @@ public class Util {
     public static double getTerrainCost(Terrain terrain) {
 
         if (Terrain.OPEN_LAND == terrain) {                 // orange
-            return 1.10;
+            return 1.06;
         }
         else if (Terrain.ROUGH_MEADOW == terrain) {         // light orange
-            return 5.0;
+            return 1.4;
         }
         else if (Terrain.EASY_MOVEMENT_FOREST == terrain) { // white
-            return 1.20;
+            return 1.12;
         }
         else if (Terrain.SLOW_RUN_FOREST == terrain) {      // light green
-            return 1.40;
+            return 1.17;
         }
         else if (Terrain.WALK_FOREST == terrain) {          // green
-            return 1.50;
+            return 1.25;
         }
         else if (Terrain.IMPASSIBLE_VEGETATION == terrain) {// dark green
             return Double.MAX_VALUE;
         }
         else  if (Terrain.PAVED_ROAD == terrain) {          // brown
-            return 1.0;
+            return 1.00;
         }
         else if (Terrain.FOOTPATH == terrain) {             // black
-            return 1.15;
+            return 1.09;
         }
         // blue, dark pink
         else if (Terrain.LAKE_SWAP_MARSH == terrain || Terrain.OUT_OF_BOUNDS == terrain) {
