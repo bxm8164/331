@@ -189,7 +189,7 @@ public class Search {
     }
 
     /**
-     * Heuristic function. Used for the starting node
+     * Heuristic function.
      * @param s the successor of the node
      * @param g the goal node
      * @return the cost from the successor to the goal
@@ -203,7 +203,10 @@ public class Search {
     }
 
     /**
-     * Heuristic function. Used for all the other nodes
+     * Heuristic function. The function heuristic(s, g) was used for the starting node and this was used for all its
+     * successors. It seems to produce better results because it looks the node ahead of the succesor, but it has the
+     * drawback that it runs pretty slow (using the simple heuristic it takes form 3 to 5 seconds and using this
+     * heuristic it increases the time to 22-25 seconds.
      * @param s the successor of the current node
      * @param g the goal node
      * @param current the current node

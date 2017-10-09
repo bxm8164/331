@@ -78,7 +78,7 @@ public class Main {
 
         LOGI("Number of nodes: " + fullPath.size());
 
-        Printer.plotNodes(fullPath, new File("terrain.png"), output);
+        Printer.plotNodes(nodes, new File("terrain.png"), output);
 
         timer.stop().print();
 
