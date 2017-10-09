@@ -254,7 +254,7 @@ public class Search {
      */
     public void rebuildPath(Node current) {
 
-        LOGD("Rebuilding path for " + current.toString());
+        // LOGD("Rebuilding path for " + current.toString());
 
         ArrayList<Node> path = new ArrayList<>();
 

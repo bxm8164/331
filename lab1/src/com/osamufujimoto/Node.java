@@ -96,7 +96,7 @@ public class Node extends Object {
      */
     public String toString() {
 
-        return String.format("Node: (%d, %d)", x, y);
+        return String.format("(%d, %d)", x, y);
     }
 
     @Override

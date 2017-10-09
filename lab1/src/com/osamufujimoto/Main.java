@@ -59,7 +59,7 @@ public class Main {
 
         LOGD("Read image: OK");
 
-        LOGI ("Number of checkpoints: " + nodes.size());
+        // LOGI ("Number of checkpoints: " + nodes.size());
 
         List<Node> fullPath = new ArrayList<>();
 
