@@ -10,7 +10,7 @@ import static com.osamufujimoto.Util.LOGD;
  * A node represent a single pixel of an image
  * @author Osamu Fujimoto
  */
-public class Node {
+public class Node extends Object {
 
     /**
      *  The x coordinate
@@ -98,4 +98,24 @@ public class Node {
 
         return String.format("Node: (%d, %d)", x, y);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Node other = (Node) obj;
+
+        if (other.x == this.x && other.y == this.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
+
+
 }

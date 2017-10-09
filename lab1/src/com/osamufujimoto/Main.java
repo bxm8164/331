@@ -2,6 +2,7 @@ package com.osamufujimoto;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -62,6 +63,9 @@ public class Main {
 
         List<Node> fullPath = new ArrayList<>();
 
+        List<List<Node>> fullPathList = new ArrayList<>();
+
+
         Search s;
 
         for (int i = 0; i < nodes.size() - 1 ; i++) {
@@ -72,13 +76,18 @@ public class Main {
 
             fullPath.addAll(s.all);
 
-            s.all.clear();
+            Collections.reverse(s.all);
+            fullPathList.add(s.all);
+
+            // s.all.clear();
 
         }
 
         LOGI("Number of nodes: " + fullPath.size());
 
-        Printer.plotNodes(nodes, new File("terrain.png"), output);
+        Printer.plotNodes(fullPath, new File("terrain.png"), output);
+
+        Printer.printHumanReadableOutput(nodes, fullPathList);
 
         timer.stop().print();
 

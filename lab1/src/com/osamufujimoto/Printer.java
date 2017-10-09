@@ -9,13 +9,49 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.Set;
 
+import static com.osamufujimoto.Util.LOGI;
 import static com.osamufujimoto.Util.PRINT;
 
 /**
  * Printer functions.
  * @author Osamu F
  */
+
+class Path {
+
+}
 public class Printer {
+
+    public static void printHumanReadableOutput(List<Node> controlPoints, List<List<Node>> fullPath) {
+
+        int controlPoint = 0;
+        int distance = 0;
+        LOGI("Number of control points: " + controlPoints.size() );
+        LOGI("Number of paths: " + fullPath.size() );
+
+
+        for (int i = 0; i < fullPath.size(); i++) {
+
+            System.out.println("- Control point: " + controlPoints.get(i));
+
+            List<Node> currentPath = fullPath.get(i);
+
+            for (int j = 0; j < currentPath.size(); j++) {
+
+                Node start = currentPath.get(0);
+
+                Node end = currentPath.get(currentPath.size() - 1);
+
+                LOGI("  Starting node: " + start.toString());
+
+                LOGI("  End node: " + end.toString());
+
+                break;
+            }
+
+        }
+        // PRINT(fullPath.get(fullPath.size() - 1).toString());
+    }
 
     /**
      * Plot the lake, swamp, marsh area with expanded edges
