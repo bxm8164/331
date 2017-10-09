@@ -55,6 +55,8 @@ public class Main {
      */
     public static void main(String[] args) {
 
+        Timer timer = new Timer().start();
+
         int[][] water = new int[500][395];
 
         Node[][] n = IO.read(image, elevations, water);
@@ -88,6 +90,8 @@ public class Main {
         LOGI("Number of nodes: " + fullPath.size());
 
         Printer.plotNodes(fullPath, new File("terrain.png"), output);
+
+        timer.stop().print();
 
     }
 
