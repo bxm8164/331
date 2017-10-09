@@ -174,7 +174,7 @@ public class Search {
 
                 g.put(edge, tG);
 
-                double estimated = g.get(edge) + heuristic(edge, _goal, current);
+                double estimated = g.get(edge) + heuristic(edge, _goal);
 
                 f.put(edge, estimated);
 
@@ -196,7 +196,14 @@ public class Search {
      */
     public double heuristic(Node s, Node g) {
 
-        return distance(s, g) * getTerrainCost(s.t) * s.e;
+        if (Math.abs(s.x - g.x) < 1 || Math.abs(s.y - g.y) < 1)
+
+            return  distance(s, g) * distance(s, g) * getTerrainCost(s.t) * (s.e * 0.95 * s.e);
+
+        else
+
+            return  distance(s, g) * distance(s, g) * getTerrainCost(s.t) * (s.e * s.e);
+
 
     }
 
