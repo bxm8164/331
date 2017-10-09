@@ -26,29 +26,12 @@ public class Main {
             = new File("mpp.txt");
 
     /**
-     * THe brown course
-     */
-    static final File brown
-            = new File("brown.txt");
-
-    /**
-     * The red course
-     */
-    static final File red
-            = new File("red.txt");
-
-    /**
-     * THe white course
-     */
-    static final File white
-            = new File("white.txt");
-
-    /**
      * THe output file
      */
     static File output
             = new File("output_all_.png");
 
+    static Season _season = Season.SUMMER; // default
     /**
      * Main program
      * @param args the arguments
@@ -63,9 +46,15 @@ public class Main {
 
         Set<Node> bound = IO.findEdges(water, n);
 
+        File in = parseArguments(args);
+
+        LOGI("Working with " + in.getName() + " course in " + _season.toString() + " season.");
+
         LOGD("Read elevations: OK");
 
-        List<Node> nodes = IO.readInputFile(new File("brown.txt"), n);
+        // List<Node> nodes = IO.readInputFile(new File("brown.txt"), n);
+
+        List<Node> nodes = IO.readInputFile(in, n);
 
         LOGD("Read image: OK");
 
@@ -131,6 +120,60 @@ public class Main {
                     node.addSuccessor(all[y][x - 1]);
                 }
 
+    }
+
+    public static File parseArguments(String[] args) {
+
+        File file = null;
+        for (String arg : args) {
+            String[] split = arg.split(":");
+            if (split[0].equals("c")) {
+                if (split[1].equals("white") || split[1].equals("brown") || split[1].equals("red")) {
+                    String course = split[1];
+                    if (course.equals("brown")) {
+                        file = new File("brown.txt");
+                    }
+                    if (course.equals("red")) {
+                        file = new File("red.txt");
+                    }
+                    if (course.equals("white")) {
+                        file = new File("white.txt");
+                    }
+                } else {
+                    LOGI("Course not valid. Exiting");
+                    System.exit(-1);
+                }
+            }
+            if (split[0].equals("s")) {
+                if (split[1].equals("winter") || split[1].equals("fall") || split[1].equals("spring") ||
+                        split[1].equals("summer")) {
+                    String season = split[1];
+                    if (season.equals("winter")) {
+                        _season = Season.WINTER;
+                    }
+                    if (season.equals("fall")) {
+                        _season = Season.FALL;
+                    }
+                    if (season.equals("spring")) {
+                        _season = Season.SPRING;
+                    }
+                    if (season.equals("summer")) {
+                        _season = Season.SUMMER;
+                    }
+                } else {
+                    LOGI("Season not valid. Exiting");
+                    System.exit(-1);
+                }
+            }
+
+        }
+        if (file == null) {
+            LOGI("No course elected. Exiting");
+            System.exit(-1);
+        } else {
+            return file;
+        }
+        return null;
     }
 
 }
