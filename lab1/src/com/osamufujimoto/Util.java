@@ -106,6 +106,21 @@ public class Util {
 
     }
 
+    public static double manhattanDistancePixel(int x, int y, int _x, int _y) {
+
+        double dx = Math.abs(x - _x) * 10.29;
+
+        double dy = Math.abs(y - _y) * 7.55;
+
+        return 1.0 * (dx + dy);
+
+    }
+
+    public static double manhattanDistancePixel(Node o1, Node o2) {
+
+        return manhattanDistancePixel(o1.x, o1.y, o2.x, o2.y);
+    }
+
     /**
      * Calculate the manhattan distance between two nodes
      * @param o1 the first node
