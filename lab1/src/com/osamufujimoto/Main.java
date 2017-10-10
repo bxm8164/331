@@ -104,30 +104,23 @@ public class Main {
         int y = node.y;
         int x = node.x;
 
-                if (y == 0) {
 
-                    node.addSuccessor(all[y + 1][x]);
+        try {
 
-                } else if (y == 499) {
+            node.addSuccessor(all[y - 1][x]);
+            node.addSuccessor(all[y + 1][x]);
+            node.addSuccessor(all[y][x + 1]);
+            node.addSuccessor(all[y][x - 1]);
+            node.addSuccessor(all[y + 1][x - 1]);
+            node.addSuccessor(all[y + 1][x + 1]);
+            node.addSuccessor(all[y - 1][x - 1]);
+            node.addSuccessor(all[y - 1][x + 1]);
 
-                    node.addSuccessor(all[y - 1][x]);
-                } else {
 
-                    node.addSuccessor(all[y + 1][x]);
-                    node.addSuccessor(all[y - 1][x]);
-                }
+        } catch (Exception ex) {
+            // LOGD("Node is out of bounds. SKipping");
+        }
 
-                if (x == 0) {
-
-                    node.addSuccessor(all[y][x + 1]);
-
-                } else if (x == 394) {
-                    node.addSuccessor(all[y][x - 1]);
-
-                } else {
-                    node.addSuccessor(all[y][x + 1]);
-                    node.addSuccessor(all[y][x - 1]);
-                }
 
     }
 
