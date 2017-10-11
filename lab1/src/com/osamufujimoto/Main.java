@@ -82,45 +82,17 @@ public class Main {
 
         LOGI("Number of nodes: " + fullPath.size());
 
-        Set<Node> border = new LinkedHashSet<>();
-        border.addAll(bound.get(0));
 
-        for (Node _border : bound.get(0)) {
+        Set<Node> result = new LinkedHashSet<>();
+        Set<Node> _borders = bound.get(1);
 
-            try {
-                int ii = 1;
-                while (ii < 7) {
-                    Node _node = n[_border.x + ii++][_border.y];
-                    border.add(_node);
-                }
-            } catch (Exception ex) {}
-            try {
-                int ii = 1;
-                while (ii < 7) {
-                    Node _node = n[_border.x][_border.y + ii++];
-                    border.add(_node);
-                }
-            } catch (Exception ex) {}
-            try {
-                int ii = 1;
-                while (ii < 7) {
-                    Node _node = n[_border.x - ii++][_border.y];
-                    border.add(_node);
-                }
-            } catch (Exception ex) {}
-            try {
-                int ii = 1;
-                while (ii < 7) {
-                    Node _node = n[_border.x][_border.y - ii++];
-                    border.add(_node);
-                }
-            } catch (Exception ex) {}
+        for (int i = 0; i < 7; i++) {
+            Set<Node> _result = expand(_borders, n);
+            result.addAll(_result);
+            _borders = _result;
+            // Printer.plotEdges(_result , new File("border_" + i + ".png"));
 
         }
-
-         Printer.plotEdges(border , new File("border.png"));
-        // Printer.plotEdges(bound.get(0) , new File("water.png"));
-
 
         Printer.plotNodes(fullPath, new File("terrain.png"), output);
 
@@ -128,6 +100,30 @@ public class Main {
 
         timer.stop().print();
 
+    }
+
+    public static Set<Node> expand(Set<Node> _borders, Node[][] n) {
+        Set<Node> safe = new LinkedHashSet<>();
+        for (Node node : _borders) {
+            if (node.successors.isEmpty()) {
+                Main.successors(node, n);
+                if (node.successors.isEmpty()) continue;
+            }
+            List<Node> current = node.successors;
+            Set<Node> level = makeSafe(n, current, false);
+            for (Node _node : level) safe.add(_node);
+        }
+        return safe;
+    }
+    public static Set<Node> makeSafe(Node[][] n, List<Node> current, boolean b) {
+        Set<Node> isSafeNow = new LinkedHashSet<>();
+        for (Node _successor : current) {
+            if (n[_successor.y][_successor.x].t == Terrain.LAKE_SWAP_MARSH) {
+                isSafeNow.add(n[_successor.y][_successor.x]);
+            }
+        }
+
+        return isSafeNow;
     }
 
     /**

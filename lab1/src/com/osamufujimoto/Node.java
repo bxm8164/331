@@ -25,7 +25,7 @@ public class Node extends Object {
     /**
      * THe type of terrain
      */
-    public final Terrain t;
+    public Terrain t;
 
     /**
      * The elevation
