@@ -28,6 +28,10 @@ public class Printer {
         LOGI("Number of paths: " + fullPath.size() );
 
 
+        double totalTime = 0.0;
+
+        final double costPerPixel = 8; // seconds (average walking speed)
+
         for (int i = 0; i < fullPath.size(); i++) {
 
             System.out.println("-- On control point #" + i);
@@ -35,7 +39,6 @@ public class Printer {
             List<Node> currentPath = fullPath.get(i);
 
             List<List<Node>> nodes;
-
 
             for (int j = 0; j < currentPath.size() - 1; j++) {
 
@@ -63,6 +66,8 @@ public class Printer {
 
                     double _distance = manhattanDistancePixel(current, next);
 
+                    totalTime += getTerrainCost(current.t) * costPerPixel;
+
                     System.out.println("Go for " + _distance + "m in " + (_angle == 0 ? "in the same direction" : "at angle "  + _angle));
 
                     continue;
@@ -72,7 +77,20 @@ public class Printer {
 
                 while (current.t == next.t && j + 2 < currentPath.size() ) {
 
+                    double additionalTime = 1.0;
+
+                    if (Main._season == Season.FALL) {
+                        for (Node node : current.successors) {
+
+                            if (node.t == Terrain.EASY_MOVEMENT_FOREST) {
+                                additionalTime = 1.15;
+                            }
+                        }
+                    }
+
                     _distance += manhattanDistancePixel(current, next);
+
+                    totalTime += getTerrainCost(current.t) * costPerPixel * additionalTime;
 
                     current = next;
 
@@ -111,6 +129,9 @@ public class Printer {
         System.out.println("-- On control point #" + controlPoints.size());
 
         System.out.println();
+
+        System.out.println("--> Total time: " + Math.round(totalTime) + " seconds");
+
         System.out.println();
         System.out.println();
 
