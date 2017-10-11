@@ -16,5 +16,6 @@ public enum Terrain {
     FOOTPATH,
     OUT_OF_BOUNDS,
     UNKNOWN,
+    ICE
 }
 

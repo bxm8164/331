@@ -62,6 +62,18 @@ public class Main {
 
         List<List<Node>> fullPathList = new ArrayList<>();
 
+        if (_season == Season.WINTER) {
+            Set<Node> result = new LinkedHashSet<>();
+            Set<Node> _borders = bound.get(1);
+
+            for (int i = 0; i < 7; i++) {
+                Set<Node> _result = expand(_borders, n);
+                result.addAll(_result);
+                _borders = _result;
+            }
+
+        }
+
 
         Search s;
 
@@ -82,21 +94,9 @@ public class Main {
 
         LOGI("Number of nodes: " + fullPath.size());
 
-
-        Set<Node> result = new LinkedHashSet<>();
-        Set<Node> _borders = bound.get(1);
-
-        for (int i = 0; i < 7; i++) {
-            Set<Node> _result = expand(_borders, n);
-            result.addAll(_result);
-            _borders = _result;
-            // Printer.plotEdges(_result , new File("border_" + i + ".png"));
-
-        }
-
         Printer.plotNodes(fullPath, new File("terrain.png"), output);
 
-        // Printer.printHumanReadableOutput(nodes, fullPathList);
+        Printer.printHumanReadableOutput(nodes, fullPathList);
 
         timer.stop().print();
 
@@ -119,6 +119,7 @@ public class Main {
         Set<Node> isSafeNow = new LinkedHashSet<>();
         for (Node _successor : current) {
             if (n[_successor.y][_successor.x].t == Terrain.LAKE_SWAP_MARSH) {
+                n[_successor.y][_successor.x].t = Terrain.ICE;
                 isSafeNow.add(n[_successor.y][_successor.x]);
             }
         }

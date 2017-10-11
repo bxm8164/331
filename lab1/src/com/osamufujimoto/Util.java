@@ -230,6 +230,9 @@ public class Util {
         else if (Terrain.FOOTPATH == terrain) {             // black
             return 1.05;
         }
+        else if (Terrain.ICE == terrain) {
+            return 1.05;
+        }
         // blue, dark pink
         else if (Terrain.LAKE_SWAP_MARSH == terrain || Terrain.OUT_OF_BOUNDS == terrain) {
             return Double.MAX_VALUE;
