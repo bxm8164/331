@@ -104,7 +104,6 @@ public class Main {
         int y = node.y;
         int x = node.x;
 
-
         try {
 
             node.addSuccessor(all[y - 1][x]);
