@@ -1,10 +1,7 @@
 package com.osamufujimoto;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.osamufujimoto.Util.*;
 
@@ -45,7 +42,7 @@ public class Main {
 
         Node[][] n = IO.read(image, elevations, water);
 
-        Set<Node> bound = IO.findEdges(water, n);
+        List<Set<Node>> bound = IO.findEdges(water, n);
 
         File in = parseArguments(args);
 
@@ -70,7 +67,7 @@ public class Main {
 
         for (int i = 0; i < nodes.size() - 1 ; i++) {
 
-            s = new Search(nodes.get(i), nodes.get(i + 1), n, bound);
+            s = new Search(nodes.get(i), nodes.get(i + 1), n, bound.get(1) /* the edges */ );
 
             s.find();
 
@@ -85,9 +82,49 @@ public class Main {
 
         LOGI("Number of nodes: " + fullPath.size());
 
+        Set<Node> border = new LinkedHashSet<>();
+        border.addAll(bound.get(0));
+
+        for (Node _border : bound.get(0)) {
+
+            try {
+                int ii = 1;
+                while (ii < 7) {
+                    Node _node = n[_border.x + ii++][_border.y];
+                    border.add(_node);
+                }
+            } catch (Exception ex) {}
+            try {
+                int ii = 1;
+                while (ii < 7) {
+                    Node _node = n[_border.x][_border.y + ii++];
+                    border.add(_node);
+                }
+            } catch (Exception ex) {}
+            try {
+                int ii = 1;
+                while (ii < 7) {
+                    Node _node = n[_border.x - ii++][_border.y];
+                    border.add(_node);
+                }
+            } catch (Exception ex) {}
+            try {
+                int ii = 1;
+                while (ii < 7) {
+                    Node _node = n[_border.x][_border.y - ii++];
+                    border.add(_node);
+                }
+            } catch (Exception ex) {}
+
+        }
+
+         Printer.plotEdges(border , new File("border.png"));
+        // Printer.plotEdges(bound.get(0) , new File("water.png"));
+
+
         Printer.plotNodes(fullPath, new File("terrain.png"), output);
 
-        Printer.printHumanReadableOutput(nodes, fullPathList);
+        // Printer.printHumanReadableOutput(nodes, fullPathList);
 
         timer.stop().print();
 

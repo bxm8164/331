@@ -107,9 +107,13 @@ public class IO {
      * @param all all the nodes in the map
      * @return a set containing all the water nodes or its edges.
      */
-    public static Set<Node> findEdges(int[][] water, Node[][] all) {
+    public static List<Set<Node>> findEdges(int[][] water, Node[][] all) {
+
+        List<Set<Node>> result = new ArrayList<>();
 
         Set<Node> set = new LinkedHashSet<>();
+
+        Set<Node> edges = new LinkedHashSet<>();
 
         for (int y = 0; y < 500; y++) {
 
@@ -126,14 +130,24 @@ public class IO {
                             set.add(scs);
 
                         }
+
+                        if (scs.t != Terrain.LAKE_SWAP_MARSH) {
+
+                            edges.add(scs);
+
+                        }
                     }
                 }
 
             }
         }
 
-        return set;
+        result.add(set);
+        result.add(edges);
+
+        return result;
     }
+
 
     /**
      * Read file containing the control points we need to pass
