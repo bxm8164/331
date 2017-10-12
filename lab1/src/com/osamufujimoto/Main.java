@@ -222,6 +222,9 @@ public class Main {
         File file = null;
         for (String arg : args) {
             String[] split = arg.split(":");
+            if (split[0].equals("o")) {
+                output = new File(split[1]);
+            }
             if (split[0].equals("c")) {
                 if (split[1].equals("white") || split[1].equals("brown") || split[1].equals("red")
                         || split[1].equals("test")) {
