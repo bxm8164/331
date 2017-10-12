@@ -67,11 +67,26 @@ public class Main {
             Set<Node> _borders = bound.get(1);
 
             for (int i = 0; i < 7; i++) {
-                Set<Node> _result = expand(_borders, n);
+                Set<Node> _result = expandInside(_borders, n);
                 result.addAll(_result);
                 _borders = _result;
             }
 
+        }
+
+        if (_season == Season.SPRING) {
+            Set<Node> result = new LinkedHashSet<>();
+            Set<Node> _borders = bound.get(1);
+
+            for (int i = 0; i < 7; i++) {
+                Set<Node> _result = expandOutside(_borders, n);
+                result.addAll(_result);
+                _borders = _result;
+            }
+
+            for (Node _result : result) {
+                n[_result.y][_result.x].t = Terrain.LAKE_SWAP_MARSH;
+            }
         }
 
 
@@ -94,7 +109,8 @@ public class Main {
 
         LOGI("Number of nodes: " + fullPath.size());
 
-        Printer.plotNodes(fullPath, new File("terrain.png"), output);
+
+        Printer.plotNodes(fullPath, new File("terrain.png"), output, n);
 
         Printer.printHumanReadableOutput(nodes, fullPathList);
 
@@ -102,7 +118,7 @@ public class Main {
 
     }
 
-    public static Set<Node> expand(Set<Node> _borders, Node[][] n) {
+    public static Set<Node> expandInside(Set<Node> _borders, Node[][] n) {
         Set<Node> safe = new LinkedHashSet<>();
         for (Node node : _borders) {
             if (node.successors.isEmpty()) {
@@ -110,12 +126,27 @@ public class Main {
                 if (node.successors.isEmpty()) continue;
             }
             List<Node> current = node.successors;
-            Set<Node> level = makeSafe(n, current, false);
-            for (Node _node : level) safe.add(_node);
+            Set<Node> level = makeSafe(n, current, null);
+            safe.addAll(level);
         }
         return safe;
     }
-    public static Set<Node> makeSafe(Node[][] n, List<Node> current, boolean b) {
+
+    public static Set<Node> expandOutside(Set<Node> _borders, Node[][] n) {
+        Set<Node> safe = new LinkedHashSet<>();
+        for (Node node : _borders) {
+            if (node.successors.isEmpty()) {
+                Main.successors(node, n);
+                if (node.successors.isEmpty()) continue;
+            }
+            List<Node> current = node.successors;
+            Set<Node> level = isNowUnderwater(n, current, node);
+            safe.addAll(level);
+        }
+        return safe;
+    }
+
+    public static Set<Node> makeSafe(Node[][] n, List<Node> current, Node from) {
         Set<Node> isSafeNow = new LinkedHashSet<>();
         for (Node _successor : current) {
             if (n[_successor.y][_successor.x].t == Terrain.LAKE_SWAP_MARSH) {
@@ -125,6 +156,20 @@ public class Main {
         }
 
         return isSafeNow;
+    }
+
+    Set <Node> mud = new LinkedHashSet<>();
+
+    public static Set<Node> isNowUnderwater(Node[][] n, List<Node> current, Node from) {
+        Set<Node> isReachable = new LinkedHashSet<>();
+        for (Node _successor : current) {
+            if (n[_successor.y][_successor.x].t != Terrain.LAKE_SWAP_MARSH) {
+                if (Math.abs(_successor.e - from.e) > 1.0) {
+                    isReachable.add(n[_successor.y][_successor.x]);
+                }
+            }
+        }
+        return isReachable;
     }
 
     /**
