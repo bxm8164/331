@@ -177,7 +177,7 @@ public class Printer {
      * @param _image the original map
      * @param output the output file
      */
-    public static void plotNodes(List<Node> nodes, File _image, File output, Node[][] underwater) {
+    public static void plotNodes(List<Node> nodes, File _image, File output, Set<Node> water) {
 
         try {
 
@@ -185,17 +185,9 @@ public class Printer {
 
             if (Main._season == Season.SPRING) {
 
-                for (int y = 0; y < 500; y++) {
+                for (Node _node : water) {
 
-                    for (int x = 0; x < 395; x++) {
-
-                        Node node = underwater[y][x];
-
-                        if (node.t == Terrain.LAKE_SWAP_MARSH) {
-
-                            image.setRGB(node.x, node.y, new Color(0, 0, 255).getRGB());
-                        }
-                    }
+                    image.setRGB(_node.x, _node.y, new Color(0, 0, 255).getRGB());
                 }
             }
 

@@ -40,7 +40,7 @@ public class Main {
 
         int[][] water = new int[500][395];
 
-        Node[][] n = IO.read(image, elevations, water);
+        final Node[][] n = IO.read(image, elevations, water);
 
         List<Set<Node>> bound = IO.findEdges(water, n);
 
@@ -74,21 +74,33 @@ public class Main {
 
         }
 
+
+        Node[][] __copy = new Node[500][395];
+        for (int y = 0; y < 500; y++) {
+
+            for (int x = 0; x < 395; x++) {
+
+                __copy[y][x] = n[y][x];
+            }
+        }
+
+        Set<Node> _borders = new LinkedHashSet<>();
         if (_season == Season.SPRING) {
             Set<Node> result = new LinkedHashSet<>();
-            Set<Node> _borders = bound.get(1);
+            _borders = bound.get(1);
 
-            for (int i = 0; i < 7; i++) {
-                Set<Node> _result = expandOutside(_borders, n);
+            for (int i = 0; i < 15; i++) {
+                Set<Node> _result = expandOutside(_borders, __copy);
                 result.addAll(_result);
                 _borders = _result;
             }
 
-            for (Node _result : result) {
-                n[_result.y][_result.x].t = Terrain.LAKE_SWAP_MARSH;
-            }
         }
 
+
+        // Printer.plotNodes(fullPath, new File("terrain.png"), output, _n);
+
+        // System.exit(0);
 
         Search s;
 
@@ -110,7 +122,10 @@ public class Main {
         LOGI("Number of nodes: " + fullPath.size());
 
 
-        Printer.plotNodes(fullPath, new File("terrain.png"), output, n);
+        if (_season == Season.SPRING)
+            Printer.plotNodes(fullPath, new File("terrain.png"), output, _borders);
+        else
+            Printer.plotNodes(fullPath, new File("terrain.png"), output, null);
 
         Printer.printHumanReadableOutput(nodes, fullPathList);
 
@@ -158,13 +173,13 @@ public class Main {
         return isSafeNow;
     }
 
-    Set <Node> mud = new LinkedHashSet<>();
 
     public static Set<Node> isNowUnderwater(Node[][] n, List<Node> current, Node from) {
         Set<Node> isReachable = new LinkedHashSet<>();
         for (Node _successor : current) {
-            if (n[_successor.y][_successor.x].t != Terrain.LAKE_SWAP_MARSH) {
-                if (Math.abs(_successor.e - from.e) > 1.0) {
+            if (n[_successor.y][_successor.x].t != Terrain.LAKE_SWAP_MARSH ||
+                    n[_successor.y][_successor.x].t != Terrain.OUT_OF_BOUNDS) {
+                if ( _successor.e - from.e > 1) {
                     isReachable.add(n[_successor.y][_successor.x]);
                 }
             }
