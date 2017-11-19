@@ -106,6 +106,14 @@ public class Util {
 
     }
 
+    /**
+     * Calculate the manhattan distance between two points
+     * @param x the first x coordinate
+     * @param y the first y coordinate
+     * @param _x the second x coordinate
+     * @param _y the second y coordinate
+     * @return the distance between (x, y) and (_x, _y)
+     */
     public static double manhattanDistancePixel(int x, int y, int _x, int _y) {
 
         double dx = Math.abs(x - _x) * 10.29;
@@ -116,6 +124,12 @@ public class Util {
 
     }
 
+    /**
+     * Calculates the manhattan distance between two points
+     * @param o1 the first node
+     * @param o2 the second node
+     * @return the distance between the first and the second node
+     */
     public static double manhattanDistancePixel(Node o1, Node o2) {
 
         return manhattanDistancePixel(o1.x, o1.y, o2.x, o2.y);

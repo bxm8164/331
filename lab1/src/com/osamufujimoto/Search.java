@@ -55,22 +55,19 @@ public class Search {
     /**
      * The nodes that are discovered but not yet evaluated
      */
-    private PriorityQueue<Node> open = new PriorityQueue<>(new Comparator<Node>() {
-        @Override
-        public int compare(Node o1, Node o2) {
-            if (f.get(o1) < f.get(o2)) {
+    private PriorityQueue<Node> open = new PriorityQueue<>((o1, o2) -> {
+        if (f.get(o1) < f.get(o2)) {
 
-                return -1;
+            return -1;
 
-            } else if (f.get(o1) > f.get(o2)) {
+        } else if (f.get(o1) > f.get(o2)) {
 
-                return 1;
+            return 1;
 
-            } else {
+        } else {
 
-                return 0;
+            return 0;
 
-            }
         }
     });
 
