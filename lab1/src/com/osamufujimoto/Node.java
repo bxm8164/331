@@ -99,6 +99,11 @@ public class Node extends Object {
         return String.format("(%d, %d)", x, y);
     }
 
+    /**
+     * Compare if two nodes are equals
+     * @param obj the other node
+     * @return true if the two nodes are equals; false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         Node other = (Node) obj;
@@ -110,6 +115,10 @@ public class Node extends Object {
         }
     }
 
+    /**
+     * The hashcode for this object
+     * @return the hashcode
+     */
     @Override
     public int hashCode() {
         int result = x;

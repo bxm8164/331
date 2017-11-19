@@ -29,7 +29,11 @@ public class Main {
     static File output
             = new File("output_all_.png");
 
-    static Season _season = Season.SUMMER; // default
+    /**
+     * The season (The sumemr season is the default value)
+     */
+    static Season _season = Season.SUMMER;
+
     /**
      * Main program
      * @param args the arguments
@@ -85,6 +89,7 @@ public class Main {
         }
 
         Set<Node> _borders = new LinkedHashSet<>();
+
         if (_season == Season.SPRING) {
             Set<Node> result = new LinkedHashSet<>();
             _borders = bound.get(1);
@@ -133,6 +138,12 @@ public class Main {
 
     }
 
+    /**
+     * Any water within seven pixels of non-water is safe to walk-on
+     * @param _borders the borders of the areas that contains water
+     * @param n all the nodes
+     * @return
+     */
     public static Set<Node> expandInside(Set<Node> _borders, Node[][] n) {
         Set<Node> safe = new LinkedHashSet<>();
         for (Node node : _borders) {
@@ -147,6 +158,13 @@ public class Main {
         return safe;
     }
 
+    /**
+     * Any pixels within fifteen pixels of water that can be reached from a water pixel without gaining more than
+     * one meter of elevation (total) are now underwater
+     * @param _borders the borders of the areas that contains water
+     * @param n all the nodes
+     * @return
+     */
     public static Set<Node> expandOutside(Set<Node> _borders, Node[][] n) {
         Set<Node> safe = new LinkedHashSet<>();
         for (Node node : _borders) {
@@ -161,6 +179,14 @@ public class Main {
         return safe;
     }
 
+
+    /**
+     *
+     * @param n
+     * @param current
+     * @param from
+     * @return
+     */
     public static Set<Node> makeSafe(Node[][] n, List<Node> current, Node from) {
         Set<Node> isSafeNow = new LinkedHashSet<>();
         for (Node _successor : current) {
@@ -174,6 +200,13 @@ public class Main {
     }
 
 
+    /**
+     *
+     * @param n
+     * @param current
+     * @param from
+     * @return
+     */
     public static Set<Node> isNowUnderwater(Node[][] n, List<Node> current, Node from) {
         Set<Node> isReachable = new LinkedHashSet<>();
         for (Node _successor : current) {
@@ -217,6 +250,11 @@ public class Main {
 
     }
 
+    /**
+     * Parse the command-line arguments.
+     * @param args the arguments
+     * @return the file we're going to use as a input
+     */
     public static File parseArguments(String[] args) {
 
         File file = null;

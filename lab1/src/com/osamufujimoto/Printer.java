@@ -19,11 +19,13 @@ import static com.osamufujimoto.Util.*;
 
 public class Printer {
 
+    /**
+     * Print human-readable output
+     * @param controlPoints the control points
+     * @param fullPath the full path
+     */
     public static void printHumanReadableOutput(List<Node> controlPoints, List<List<Node>> fullPath) {
 
-        int controlPoint = 0;
-        int distance = 0;
-        Direction direction;
         LOGI("Number of control points: " + controlPoints.size() );
         LOGI("Number of paths: " + fullPath.size() );
 
@@ -68,7 +70,8 @@ public class Printer {
 
                     totalTime += getTerrainCost(current.t) * costPerPixel;
 
-                    System.out.println("Go for " + _distance + "m in " + (_angle == 0 ? "in the same direction" : "at angle "  + _angle));
+                    System.out.println("Go for " + _distance + "m in " +
+                            (_angle == 0 ? "in the same direction" : "at angle "  + _angle));
 
                     continue;
                 }
@@ -104,19 +107,24 @@ public class Printer {
 
                 if (current.t == Terrain.PAVED_ROAD)
 
-                    System.out.println("Follow the paved road for " + (int) Math.floor(_distance)+ "m " +(_angle == 0 ? "in the same direction" : "at angle "  + _angle) ) ;
+                    System.out.println("Follow the paved road for " + (int) Math.floor(_distance)+ "m " +
+                            (_angle == 0 ? "in the same direction" : "at angle "  + _angle) ) ;
 
                 else if (current.t == Terrain.FOOTPATH)
 
-                    System.out.println("Follow path for " + (int) Math.floor(_distance)+ "m " + (_angle == 0 ? "in the same direction" : "at angle " + _angle) ) ;
+                    System.out.println("Follow path for " + (int) Math.floor(_distance)+ "m " +
+                            (_angle == 0 ? "in the same direction" : "at angle " + _angle) ) ;
 
-                else if (current.t == Terrain.EASY_MOVEMENT_FOREST || current.t == Terrain.SLOW_RUN_FOREST || current.t == Terrain.WALK_FOREST)
+                else if (current.t == Terrain.EASY_MOVEMENT_FOREST || current.t == Terrain.SLOW_RUN_FOREST ||
+                        current.t == Terrain.WALK_FOREST)
 
-                    System.out.println("Go for " + (int) Math.floor(_distance)+ "m " + (_angle == 0 ? "in the same direction" : "at angle " + _angle) );
+                    System.out.println("Go for " + (int) Math.floor(_distance)+ "m " +
+                            (_angle == 0 ? "in the same direction" : "at angle " + _angle) );
 
                 else
 
-                    System.out.println("Go for " + (int) Math.floor(_distance)+ "m " + (_angle == 0 ? "in the same direction" : "at angle " + _angle) ) ;
+                    System.out.println("Go for " + (int) Math.floor(_distance)+ "m " +
+                            (_angle == 0 ? "in the same direction" : "at angle " + _angle) ) ;
 
 
 
