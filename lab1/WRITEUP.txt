@@ -1,0 +1,49 @@
+WRITEUP
+==============================================
+
+Each pixel has an unique terrain associated to it, the paved road has a base cost of
+1.0 and the cost increases according to the type of the path (empirically choosen
+using th photos).
+
+The heuristic cost is defined using the euclidean distance from the successor of the node
+to the goal node multiplied by the terrain cost of its successor and the ratio of elevations between the successor node and goal node.
+
+In A*, the heursitic function is said to be admissible if it never overestimates the cost of reaching the goal. The shortest distance from the successor to the goal is an straight line which is the euclidea distance, this distance is multiplied by the cost of the sucessor and its ratio of elevation. Sucessor path with terrain and lower elevations will have lower heuristic cost than sucessor with rougher terrain and higher elevation.
+
+To measure calculate the total time, I assigned a base distance cost to travel the paved road path (which has cost of 1.0). Other path with different types of terrain, calculates the distance to travel the node multiplying the cost of the terrain with the base time to travel.
+
+To write the human-readable output. I keep track of the current node and the next node.
+
+1. If the current node terrain is different than the next node terrain
+	1.1 Calculate the angle of the next node.
+	1.2 Calculate the time to travel through the nodes, and add the time to the total cost.
+2. If the current node terrain is the same as the next node terain.
+	2.1 Calculate the time to travel through the nodes and add the time to the total time
+	2.3 Update the current and next node to the next and next following node.
+	2.3 If the current and next node are different, calculate the angle between the nodes and exit the loop
+
+For the fall season, check the current season and increases the cost to travel through
+the terrain.
+
+
+RUNNING THE PROGRAM
+==============================================
+
+--> On the parent directory, run with
+
+java -jar lab1.jar c:{white, red, brown} s:{summer, fall, winter, spring} [o:{filename.ext}]
+
+--> On the parent directory, compile the source files with
+
+javac -d "out" -cp "src" src/com/osamufujimoto/*.java
+
+--> On the parent directory, run the class files with
+
+java -cp "out" com.osamufujimoto.Main c:{white, red, brown} s:{summer, fall, winter, spring} [o:{filename.ext}]
+
+The default output filename is output_all_.png
+
+
+
+
+
